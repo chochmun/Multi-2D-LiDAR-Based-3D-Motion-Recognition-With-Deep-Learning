@@ -1,0 +1,137 @@
+
+#==========================디버깅==START============================
+debugging_parameters:
+  wrong_window: 0 #틀린것들을 보기위한 것
+  see_all_epochs: 1 #1이면 학습할때마다 epoch모두다보고, 아니면 마지막꺼만 봄
+  beep_level: 95 #최고파라미터가 95넘으면 Beep!
+  num_random_times: 5 #Random하게 경우의수 얼마만큼 볼건지
+ #==========================디버깅==END============================
+
+ #===========================하이퍼 파라미터 =START============================
+hyperparameters:
+  hidden_dims_array:
+    #- [64, 64]
+    #- [64, 32]
+    - [64, 32, 16]
+    #- [128, 64, 32]
+  momentum_num: 0.9 #웬만하면 고정, SGD만 사용함
+  dropout_rates: [0] #0.3, 0.5 #0 도 추천 
+  num_epoch_values: [10] #10, 20, 50, 100,500, 1000
+  learning_rates: [0.01] #, 0.005, 0.0001
+  weight_decay_values: [0.0001] #0 도 추천 
+  
+  optim_is_values: [1] #최적화  1-Adam, 2-SGD, 3-Adagrad, 4-Adadelta
+  loss_is_values: [1]  #손실함수 1: CrossEntropy,    2: MSE  (오류있음,호환성 이슈)
+  early_stop_accuracies: [97] # 넘으면 학습 조기종료                               # 90 99
+  batch_size_values: [64] #, 128
+  BN_use_choice: [True,false]
+  activation_list: [1] #1:ReLU, 2:Sigmoid, 3:Tanh
+  loss_threshold: 0.005   #손실 loss가 이정도
+  max_Loss_small_change_count: 3 #세번반복되면 학습 조기종료
+  
+#====================================하이퍼 파라미터 =END =============================
+
+#====================================PATH =START =============================
+file_paths:
+  train_csv_files:
+    Raw_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_all.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_all.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_all.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all.csv"
+    Ex3_5_Filter_Aug_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/ex3_5_jun_32000aug.csv"
+      - "C:/capstone_data/3/0502/stop/seano/ex3_5_sun_32000aug.csv"
+      - "C:/capstone_data/3/0502/stop/mini/ex3_5_min_32000aug.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/ex3_5_chung_32000aug.csv"
+    Filter_Aug_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_all_filter_Aug_32000.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_all_filter_Aug_32000.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_all_filter_Aug_32000.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all_filter_Aug_32000.csv"
+    Only_Aug_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_allunfilted_augmented_32000.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_allunfilted_augmented_32000.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_allunfilted_augmented_32000.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_allunfilted_augmented_32000.csv"
+    Only_Filter_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all_filter.csv"
+    
+  predict_csv_files:
+    #원본파일
+    Raw_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_all.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_all.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_all.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all.csv"
+    #필터 거친건 무조건 이걸로 예측
+    Filter_files:
+      - "C:/capstone_data/3/0502/stop/Junmo/jun_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/seano/sun_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/mini/min_all_filter.csv"
+      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all_filter.csv"
+    #절반 나눈걸 필터 거친것
+    Ex0_5_Filter_files:
+      - "C:/capstone_data/3/0501/stop/Junmo/jun_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/seano/sun_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/mini/min_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/chungmoon/chung_all_part2_filter.csv"
+#====================================PATH = END   ===============================
+
+#====================================CASE = START ==============================
+cases:
+  case3to1: #3명골라서 1명학습
+    - [3, [1, 2, 3], 4]
+    - [3, [1, 2, 4], 3]
+    - [3, [1, 3, 4], 2]
+    - [3, [2, 3, 4], 1]
+  case2to1: #2명골라서 1명학습
+    - [2, [1, 2], 3]
+    - [2, [1, 2], 4]
+    - [2, [1, 3], 2]
+    - [2, [1, 3], 4]
+    - [2, [1, 4], 2]
+    - [2, [1, 4], 3]
+    - [2, [2, 3], 1]
+    - [2, [2, 3], 4]
+    - [2, [2, 4], 1]
+    - [2, [2, 4], 3]
+    - [2, [3, 4], 1]
+    - [2, [3, 4], 2]
+  case1to1: #1명골라서 1명학습
+    - [1, [1], 2]
+    - [1, [1], 3]
+    - [1, [1], 4]
+    - [1, [2], 1]
+    - [1, [2], 3]
+    - [1, [2], 4]
+    - [1, [3], 1]
+    - [1, [3], 2]
+    - [1, [3], 4]
+    - [1, [4], 1]
+    - [1, [4], 2]
+    - [1, [4], 3]
+#===================================CASE END=========================
+index_to_name:
+  1: "준모"
+  2: "선호"
+  3: "민의"
+  4: "청문"
+
+optimizers_dict:
+  1: Adam
+  2: SGD
+  3: Adagrad
+  4: Adadelta
+
+loss_functions_dict:
+  1: CrossEntropyLoss
+  2: MSELoss
+
+activation_functions_dict:
+  1: ReLU
+  2: Sigmoid
+  3: Tanh
