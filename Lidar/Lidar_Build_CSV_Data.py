@@ -1,4 +1,4 @@
-import ydlidar_x2_driver
+import Ydlidar_Interface
 import time
 import numpy as np
 import csv

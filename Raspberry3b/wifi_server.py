@@ -1,4 +1,4 @@
-import ydlidar_x2_driver
+import Ydlidar_Interface
 import socket
 import struct
 import time

@@ -1,16 +1,28 @@
-import Ydlidar_Interface
+import Ydlidar_Interface as ydlidar
 import time
 import math
 import numpy as np
 import tkinter as tk
+import serial.tools.list_ports
+
+def list_serial_ports():
+    ports = serial.tools.list_ports.comports()
+    port_names = []
+
+    for port in ports:
+        port_names.append(port.device)
+    
+    return port_names
+port_names = list_serial_ports()
+print(port_names)
 
 D_ANGLE= 90
 D_start_angle=int(180-(90-D_ANGLE/2))
 D_end_angle= int(90-D_ANGLE/2)
 
-port1 = 'COM13' #머리
-port2 = 'COM12' #허리
-port3 = 'COM8' #다리
+port1 = port_names[1]
+port2 = port_names[0]
+port3 = port_names[2]
 
 cycle_size=100
 cycle_size2=150
@@ -89,13 +101,13 @@ def split_point(x, y):
     half_x = x / scaling
     half_y = y / scaling
     return half_x, half_y
-lid1 = Ydlidar_interface.YDLidarX2(port1)
+lid1 = ydlidar.YDLidarX2(port1)
 lid1.connect()
 lid1.start_scan()
-lid2 = Ydlidar_interface.YDLidarX2(port2)
+lid2 = ydlidar.YDLidarX2(port2)
 lid2.connect()
 lid2.start_scan()
-lid3 = Ydlidar_interface.YDLidarX2(port3)
+lid3 = ydlidar.YDLidarX2(port3)
 lid3.connect()
 lid3.start_scan()
 print("LiDAR started")

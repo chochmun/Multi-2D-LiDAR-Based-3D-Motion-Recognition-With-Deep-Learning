@@ -4,7 +4,14 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from torch.utils.data import DataLoader, TensorDataset
-import matplotlib.pyplot as plt
+import yaml
+
+with open('Motion_Recognition_Model/parameters.yaml', 'r', encoding='utf-8') as file:
+    yaml_data = yaml.safe_load(file)
+    file_paths = yaml_data['file_paths']
+    file_paths=file_paths['predict_csv_files']
+    predict_csv_files=file_paths['Filter_files']
+
 # Define the model class once
 class LidarCNN(nn.Module):
     def __init__(self, num_classes):
@@ -25,15 +32,22 @@ class LidarCNN(nn.Module):
         x = self.dropout(self.relu(self.fc1(x)))
         return self.fc2(x)
 
-# List of data files and epochs
+# Define file paths and mappings
+index_to_name = {
+    0: "junk",
+    1: "sunk",
+    2: "mink",
+    3: "munc"
+}
 
-data_files = ['sun.csv', 'chung.csv', 'min.csv','jun.csv']
+# List of epochs
+epochs = [15]  # Add more epochs if needed
 
+dataset_accuracies = {index_to_name[key]: [] for key in [0,1,2,3]} # 인덱스마다 [] 어레이 생성하는 딕셔너리 생성
 
-epochs = [15]#, 30, 50, 100, 200, 300]
-dataset_accuracies = {file: [] for file in data_files}
-
-for data_path in data_files:
+for index, data_path in enumerate(predict_csv_files):
+    dataset_name = index_to_name[index]
+    print(dataset_name)
     # Load the CSV data
     data = pd.read_csv(data_path)
     X = data.iloc[:, 1:].values
@@ -49,15 +63,12 @@ for data_path in data_files:
     X_tensor = torch.tensor(X_scaled, dtype=torch.float32)
     y_tensor = torch.tensor(y_encoded, dtype=torch.long)
     dataset = TensorDataset(X_tensor, y_tensor)
-    loader = DataLoader(dataset, batch_size=64, shuffle=False)
+    loader = DataLoader(dataset, batch_size=1, shuffle=False)
     
     accuracies = []
     for epoch in epochs:
-        #model_path = f'cnn_ex{data_path[:-4]}_aug__model_{epoch}.pth'
         model = LidarCNN(len(label_encoder.classes_))
-
-        model_path = f'saved_models\cnn_ex3_5_{data_path[:-4]}_32000aug_model_{epoch}.pth'
-
+        model_path = f'Motion_Recognition_Model/saved_models/cnn_ex3_5_{dataset_name}_32000aug_model_{epoch}.pth'
         model.load_state_dict(torch.load(model_path))
         model.eval()
 
@@ -72,32 +83,21 @@ for data_path in data_files:
         accuracy = 100 * correct / total
         accuracies.append(accuracy)
     
-        # Plot and save the accuracy for each model
-        """plt.figure(figsize=(10, 5))
-        plt.plot(epochs[:len(accuracies)], accuracies)
-        plt.xlabel('Epoch')
-        plt.ylabel('Accuracy (%)')
-        plt.title(f'Accuracy vs Epoch for {data_path[:-4].capitalize()} Data')
-        plt.savefig(f'cnn_{data_path[:-4]}__model_accuracy_aug.jpg')
-        plt.close()"""
-    
-    dataset_accuracies[data_path].extend(accuracies)
+    dataset_accuracies[dataset_name].extend(accuracies)
 
 # Plotting average accuracies per dataset
 plt.figure(figsize=(10, 5))
 labels = []
-print(dataset_accuracies.items())
 all_values = []
 for values in dataset_accuracies.values():
     all_values.extend(values)
-# 평균을 계산
 average = sum(all_values) / len(all_values) if all_values else 0
 print(f"Average: {average:.2f}")
 
-for data_path, acc in dataset_accuracies.items():
+for dataset_name, acc in dataset_accuracies.items():
     avg_accuracy = sum(acc) / len(acc)
-    plt.bar(data_path[:-4], avg_accuracy)
-    labels.append(data_path[:-4].capitalize())
+    plt.bar(dataset_name, avg_accuracy)
+    labels.append(dataset_name.capitalize())
 plt.xlabel('Dataset')
 plt.ylabel('Average Accuracy (%)')
 plt.title('Average Accuracy per Dataset')

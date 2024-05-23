@@ -75,10 +75,10 @@ file_paths:
       - "C:/capstone_data/3/0502/stop/chungmoon/chung_all_filter.csv"
     #절반 나눈걸 필터 거친것
     Ex0_5_Filter_files:
-      - "C:/capstone_data/3/0502/stop/Junmo/jun_all_part2_filter.csv"
-      - "C:/capstone_data/3/0502/stop/seano/sun_all_part2_filter.csv"
-      - "C:/capstone_data/3/0502/stop/mini/min_all_part2_filter.csv"
-      - "C:/capstone_data/3/0502/stop/chungmoon/chung_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/Junmo/jun_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/seano/sun_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/mini/min_all_part2_filter.csv"
+      - "C:/capstone_data/3/0501/stop/chungmoon/chung_all_part2_filter.csv"
 #====================================PATH = END   ===============================
 
 #====================================CASE = START ==============================
