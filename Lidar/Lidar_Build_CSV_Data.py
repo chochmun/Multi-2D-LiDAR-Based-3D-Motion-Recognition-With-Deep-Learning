@@ -6,7 +6,7 @@ from datetime import datetime
 import winsound
 
 poses = {
-    '0': "사람없는 상태",
+    '0': "디폴트자세",
     '1': "만세",
     '2': "몸좌로기울기",
     '3': "몸우로기울기",
@@ -26,7 +26,7 @@ gesture_num = input("입력할 제스처 번호를 선택하세요: ")
 gesture_name = ""
 gesture_name = poses[gesture_num]
 
-CSV_name = 'csv/'+gesture_name+'_lidar_data'+ datetime.now().strftime('%m_%d_%H-%M-%S') +'.csv'
+CSV_name = 'CSV_Files/'+gesture_name+'_lidar_data'+ datetime.now().strftime('%m_%d_%H-%M-%S') +'.csv'
 port1 = 'COM12' #머리
 port2 = 'COM5' #허리
 port3 = 'COM7' #다리
@@ -34,13 +34,13 @@ port3 = 'COM7' #다리
 max_range=2000
 TOTAL_FRAME=2000
 
-lid = ydlidar_x2_driver.YDLidarX2(port1)
+lid = Ydlidar_Interface.YDLidarX2(port1)
 lid.connect()
 lid.start_scan()
-lid2 = ydlidar_x2_driver.YDLidarX2(port2)
+lid2 = Ydlidar_Interface.YDLidarX2(port2)
 lid2.connect()
 lid2.start_scan()
-lid3 = ydlidar_x2_driver.YDLidarX2(port3)
+lid3 = Ydlidar_Interface.YDLidarX2(port3)
 lid3.connect()
 lid3.start_scan()
 print("LiDAR started")

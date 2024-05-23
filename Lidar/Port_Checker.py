@@ -10,6 +10,6 @@ def list_serial_ports():
     return port_names
 
 if __name__ == "__main__":
-   
-    """for idx, port_name in enumerate(port_names, start=1):
-        print(f"port{idx} = '{port_name}'")"""
+    port_names=list_serial_ports()
+    for idx, port_name in enumerate(port_names, start=1):
+        print(f"port{idx} = '{port_name}'")

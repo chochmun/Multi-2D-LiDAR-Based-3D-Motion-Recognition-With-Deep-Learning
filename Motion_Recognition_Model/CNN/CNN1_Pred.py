@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from torch.utils.data import DataLoader, TensorDataset
 import yaml
+import time
 
 with open('Motion_Recognition_Model/parameters.yaml', 'r', encoding='utf-8') as file:
     yaml_data = yaml.safe_load(file)
@@ -79,6 +80,8 @@ for index, data_path in enumerate(predict_csv_files):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
+                print(predicted,inputs)
+                time.sleep(0.05)
 
         accuracy = 100 * correct / total
         accuracies.append(accuracy)
