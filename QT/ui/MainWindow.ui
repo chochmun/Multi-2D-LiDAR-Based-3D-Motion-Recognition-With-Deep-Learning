@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #FFFFFF;</string>
+  </property>
+  <widget class="QWidget" name="StartWindow">
+   <widget class="QPushButton" name="Button_dataview">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>60</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Multi-Lidar Data View</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_setting">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>20</y>
+      <width>161</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(213, 218, 227);</string>
+    </property>
+    <property name="text">
+     <string>Settings</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoRepeatDelay">
+     <number>300</number>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_envset">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>60</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Environment Set</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_skeletonview">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Skeleton View</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_csvsave">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>120</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Save to CSV</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>30</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>30</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Utility</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_unity">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>190</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>Connect Unity</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>-40</x>
+      <y>-10</y>
+      <width>661</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+background-image: url(C:/capstone_data/Multi-2d-Lidar-sensors-motion-reconition/QT/qrc//images//background.JPG);</string>
+    </property>
+   </widget>
+   <zorder>graphicsView</zorder>
+   <zorder>Button_dataview</zorder>
+   <zorder>Button_setting</zorder>
+   <zorder>Button_envset</zorder>
+   <zorder>Button_skeletonview</zorder>
+   <zorder>Button_csvsave</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>Button_unity</zorder>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../qrc/background.qrc"/>
+ </resources>
+ <connections/>
+</ui>

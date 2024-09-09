@@ -1,0 +1,13 @@
+{
+    "0": "attention",
+    "1": "walk",
+    "2": "walk_left_handsup",
+    "3": "walk_right_handsup",
+    "4": "wave",
+    "5": "run",
+    "6": "jump",
+    "7": "squat",
+    "8": "left_hands_updown",
+    "9": "right_hands_updown",
+    "10": "none"
+}
