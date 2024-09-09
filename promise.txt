@@ -1,0 +1,47 @@
+< 데이터 저장 프로토콜>
+    ( Rule 1: 언더바로 무조건 구별한다)
+
+    우선순위 = {
+        1_Exclusion Y/N     #누군가를 제외한 csv파일인가? N to 1 예측시 사용
+        2_Name              #모션 입력한 인물 이름
+        3_Label or All Label#어떤 동작(Label)인가를 구별_ 모든동작이 포함되어있으면 All
+        4_Data split        #데이터를 나누는 경우
+        5_Filter            #필터를 거쳤는가?   
+        6_Augmentation      #증강
+        7_Augmentation size #증강 사이즈
+        8_Augmentation Type #증강 유형      #결국 증강을 했으면 사이즈 유형까지 다 적어야, 가독성 좋다.
+    }
+
+    example ={
+        1제외 : ex_junk.csv
+        2이름 : junk.csv
+        3라벨 : junk_L1.csv, junk_L2.csv, ... 
+        4스플릿 : junk_part1.csv, junk_part2.csv, ...
+        5필터 : junk_F.csv, munc_F.csv, ...
+            6증강 : sunk_Aug.csv
+            7증강크기 : junk_Aug16K.csv, junk_Aug32K.csv
+        8증강유형 : junk_Aug32K_MNSS.csv, junk_Aug16k_MNSX.csv
+    }
+
+    (공백) (라벨다 합친 Raw한상태 jun.csv)
+
+
+    Details ={
+        1제외_
+        2이름_그냥 이름만 있으면 모든 라벨파일이다. ex- junk.csv는 junk_all.csv파일과 의미가 같다.
+        3라벨_그냥 이름만 있으면 모든 라벨파일이다.
+        4스플릿_쪼개고 학습시킬거 part1, 쪼개고 예측할거 part2
+        5필터_
+        6증강_결국 증강은 6_7_8을 포함해야한다.
+        7증강크기_같은 스케일링해도 곱으로 가냐 덧셈으로 가냐에 따라서 달라서 넣은거임. 보통 곱증강으로 가는게 맞는거 같다.
+        8증강유형 : M미러링  N노이즈 S스케일링 S쉬프트 순서를 지킬것. 이후에 추가될 예정
+    }
+    <혼종>
+    ex_jun_F_Aug16K_MNXS.csv
+    jun_F_Aug32K_MNSS.csv
+    jun_part2_F.csv
+    jun_part1_F_Aug8K_MNXS.csv
+
+
+<데이터 저장 경로>
+D드라이브\capstone\(날짜 ,월일 숫자로)-(stop or move)- 사람이름폴더
