@@ -1,1 +1,4 @@
-lidar_venv/
+lidar_interface\__pycache__
+lidar_interface\ui_py\__pycache__
+lidar_interface\qrc\__pycache__
+lidar_interface\lidar_services\__pycache__
