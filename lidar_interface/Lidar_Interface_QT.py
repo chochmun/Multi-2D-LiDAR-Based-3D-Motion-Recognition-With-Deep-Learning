@@ -48,7 +48,7 @@ class MainApp(QtWidgets.QMainWindow):
         except IndexError as e:
             print(f"Error: {e}")
             self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
-        
+            self.multi_lidar_services = None
         self.ports_choice=[1,2,3]
         self.envpath="C:\capstone_data\Multi-2d-Lidar-sensors-motion-reconition\QT\env_jsons"
         
@@ -224,8 +224,9 @@ class MainApp(QtWidgets.QMainWindow):
 
         try:
             self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+
         except FileNotFoundError as e:
-            message="Environment path is wrong"
+            message="path is wrong"
             self.show_error_message(message)
         print(f"Settings Saved: MaxDist={self.max_dist}, BuzzDuration={self.buzz_duration}, Angle={self.selected_angle}, Env={self.selected_env}, Model={self.selected_model}")
         self.save_settings_to_file()
@@ -559,6 +560,27 @@ class MainApp(QtWidgets.QMainWindow):
         self.save_csv_ui.Button_stop.clicked.connect(self.stop_function)
         self.connect_unity_ui.Button_start.clicked.connect(self.start_connect_unity_function)
         self.connect_unity_ui.Button_stop.clicked.connect(self.stop_function)
+    def set_buttons_initial_state(self):
+        if self.multi_lidar_services is None:
+            # 라이다 서비스가 없으면 Start/Stop 버튼을 비활성화
+            self.data_view_ui.Button_start.setEnabled(False)
+            self.data_view_ui.Button_stop.setEnabled(False)
+            self.skeleton_view_ui.Button_start.setEnabled(False)
+            self.skeleton_view_ui.Button_stop.setEnabled(False)
+            self.save_csv_ui.Button_start.setEnabled(False)
+            self.save_csv_ui.Button_stop.setEnabled(False)
+            self.connect_unity_ui.Button_start.setEnabled(False)
+            self.connect_unity_ui.Button_stop.setEnabled(False)
+
+            # Count for Sequence 버튼도 비활성화
+            self.save_csv_ui.Button_countforsequence.setEnabled(False)
+        else:
+            # 라이다 서비스가 있을 때 기본 버튼 활성화
+            self.data_view_ui.Button_start.setEnabled(True)
+            self.skeleton_view_ui.Button_start.setEnabled(True)
+            self.save_csv_ui.Button_start.setEnabled(True)
+            self.connect_unity_ui.Button_start.setEnabled(True)
+            self.save_csv_ui.Button_countforsequence.setEnabled(False)
 
     def plot_real_time(self,ax,points):
         #app = QApplication(sys.argv)
