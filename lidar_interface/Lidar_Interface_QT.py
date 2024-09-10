@@ -512,7 +512,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.env_set_ui.Input_json.setText(new_env_name)
         self.env_set_ui.Input_loadingtime.setText(str(self.new_env_loading_time))
         self.env_set_ui.Input_margindist.setText(str(self.new_env_margin_dist))
-        self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+        #self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
 
         print("UI updated from loaded settings.")
     def connect_ui_buttons(self):
