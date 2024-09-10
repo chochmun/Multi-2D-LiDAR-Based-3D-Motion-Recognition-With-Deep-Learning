@@ -42,14 +42,8 @@ class MainApp(QtWidgets.QMainWindow):
         else:
             self.default_initialization()
         
+        self.multi_lidar_services=None
         
-        # 멀티라이다 서비스 객체 생성 및 오류처리
-        try:
-            self.multi_lidar_services = MultiLidarServices()
-        except IndexError as e:
-            print(f"Error: {e}")
-            self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
-            self.multi_lidar_services = None
         self.ports_choice=[1,2,3]
         self.envpath="C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\env_jsons"
         
@@ -78,9 +72,9 @@ class MainApp(QtWidgets.QMainWindow):
         self.connect_unity_ui = Ui_ConnectUnityWindow()
         self.connect_unity_ui.setupUi(self.connect_unity_window)
          # 그래프 추가
-        self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
-        self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
-        self.layout.addWidget(self.canvas)
+        #self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
+        #self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
+        #self.layout.addWidget(self.canvas)
 
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
@@ -97,9 +91,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.name=self.save_csv_ui.Input_name.text()
         self.selected_pose=self.save_csv_ui.FuncLabel_count.text()
 
-        #프로그램 시작시 settings 디폴트값으로 초기화
-        tmp=self.multi_lidar_services.multi_lidar_driver.detect_lidar_ports()
-        self.setting_ui.FuncLable_portlist.setText(", ".join(tmp))
+        
         
         self.max_dist = int(self.setting_ui.Input_maxdist.text())
         self.buzz_duration = int(self.setting_ui.Input_buzzduration.text())
@@ -532,7 +524,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.Button_csvsave.clicked.connect(self.show_save_csv_window)
         self.ui.Button_unity.clicked.connect(self.show_connect_unity_window)
         self.ui.Button_usbconnection.clicked.connect(self.connect_lidars_with_usb)
-        self.ui.Button_wificonnection.clicked.connect(self.connect_lidars_with_usb)
+        self.ui.Button_wificonnection.clicked.connect(self.connect_lidars_with_wifi)
 
         # SettingWindow 이벤트 연결
         self.setting_ui.List_env.itemClicked.connect(self.select_env)
@@ -591,8 +583,27 @@ class MainApp(QtWidgets.QMainWindow):
             self.save_csv_ui.Button_start.setEnabled(True)
             self.connect_unity_ui.Button_start.setEnabled(True)
             self.save_csv_ui.Button_countforsequence.setEnabled(False)
-    def connect_lidars_with_usb():
-        print("1")
+    def connect_lidars_with_usb(self):
+        # 멀티라이다 서비스 객체 생성 및 오류처리
+        try:
+            self.multi_lidar_services = MultiLidarServices()
+            #프로그램 시작시 settings 디폴트값으로 초기화
+            tmp=self.multi_lidar_services.multi_lidar_driver.detect_lidar_ports()
+            self.setting_ui.FuncLable_portlist.setText(", ".join(tmp))
+        except IndexError as e:
+            print(f"Error: {e}")
+            self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
+            self.multi_lidar_services = None
+
+    def connect_lidars_with_wifi(self):
+        # 멀티라이다 서비스 객체 생성 및 오류처리
+        try:
+            self.multi_lidar_services = MultiLidarServices()
+        except IndexError as e:
+            print(f"Error: {e}")
+            self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
+            self.multi_lidar_services = None
+
     def plot_real_time(self,ax,points):
         #app = QApplication(sys.argv)
         

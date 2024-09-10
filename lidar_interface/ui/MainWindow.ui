@@ -178,7 +178,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">
-background-image: url(C:/capstone_data/Multi-2d-Lidar-sensors-motion-reconition/QT/qrc//images//background.JPG);</string>
+background-image: url(C:/capstone_data/Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning/qrc//images//background.JPG);</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Button_usbconnection">

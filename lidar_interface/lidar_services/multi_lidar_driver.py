@@ -43,8 +43,8 @@ class MultiLidardriver:
     def choose_ports(self,ports_choice):
         try:
             self.validate_ports_choice(ports_choice)
-            print("ports_choice가 유효합니다.")
             tmp= [self.ports[i-1] for i in ports_choice]
+            print("ports_choice가 유효합니다.")
             return tmp
         except ValueError as e:
             print(f"에러: {e}")
