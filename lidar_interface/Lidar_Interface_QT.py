@@ -6,7 +6,7 @@ import threading
 import winsound
 import random
 import numpy as np
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets,QtCore
 from ui_py.MainWindow import Ui_MainWindow
 from ui_py.SettingWindow import Ui_SettingWindow
 from ui_py.DataViewWindow import Ui_DataViewWindow
@@ -14,8 +14,10 @@ from ui_py.EnvSetWindow import Ui_EnvSetWindow
 from ui_py.SkeletonViewWindow import  Ui_SkeletonViewWindow
 from ui_py.SaveCsvWindow import Ui_SaveCsvWindow
 from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow
-from ui_py.ClassAccuracyGraph import   MplCanvas
+
 from PyQt5.QtWidgets import QApplication, QMessageBox,QVBoxLayout
+
+from lidar_services.ClassAccuracyGraph import MplCanvas
 from lidar_services.multi_lidar_services import MultiLidarServices
 
 from datetime import datetime
@@ -71,10 +73,12 @@ class MainApp(QtWidgets.QMainWindow):
         self.connect_unity_window = QtWidgets.QWidget()
         self.connect_unity_ui = Ui_ConnectUnityWindow()
         self.connect_unity_ui.setupUi(self.connect_unity_window)
-         # 그래프 추가
-        #self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
-        #self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
-        #self.layout.addWidget(self.canvas)
+        
+        # ConnectUnityApp 추가: MplCanvas를 통해 그래프를 추가
+        self.layout_widget = self.connect_unity_ui.Button_Connect.parent()
+        self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=self.selected_angle)
+        self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
+        #self.connect_unity_app = ConnectUnityApp()
 
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
@@ -222,7 +226,8 @@ class MainApp(QtWidgets.QMainWindow):
 
         try:
             self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
-
+            self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=self.selected_angle)
+            self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
         except FileNotFoundError as e:
             message="path is wrong"
             self.show_error_message(message)
@@ -361,13 +366,22 @@ class MainApp(QtWidgets.QMainWindow):
         self.start_buzzer(self.buzz_duration)
         self.is_running = True
         self.multi_lidar_services.multi_lidar_driver.start_lidars()
+
+        # 타이머 설정: 0.05초마다 업데이트
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.mplcanvas.update_plot)
+        self.timer.start()
+        
         while self.is_running:
             data_strings=self.multi_lidar_services.view_datas()
             print(data_strings)
             
             
+            
             QApplication.processEvents()
         self.stop_function()
+        self.timer.stop()
     #============================라이다 구동함수 끝================================================================================
     def start_buzzer(self, duration):
         print(f"Buzzing for {duration} seconds...")

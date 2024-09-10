@@ -36,6 +36,12 @@ class Ui_ConnectUnityWindow(object):
         self.Button_stop = QtWidgets.QPushButton(ConnectUnityWindow)
         self.Button_stop.setGeometry(QtCore.QRect(330, 340, 91, 25))
         self.Button_stop.setObjectName("Button_stop")
+        self.verticalLayoutWidget = QtWidgets.QWidget(ConnectUnityWindow)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(30, 40, 691, 281))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
 
         self.retranslateUi(ConnectUnityWindow)
         QtCore.QMetaObject.connectSlotsByName(ConnectUnityWindow)
