@@ -13,7 +13,7 @@ from ui_py.DataViewWindow import Ui_DataViewWindow
 from ui_py.EnvSetWindow import Ui_EnvSetWindow
 from ui_py.SkeletonViewWindow import  Ui_SkeletonViewWindow
 from ui_py.SaveCsvWindow import Ui_SaveCsvWindow
-from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow
+from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow, MplCanvas
 from PyQt5.QtWidgets import QApplication
 from lidar_services.multi_lidar_services import MultiLidarServices
 from PyQt5.QtWidgets import QMessageBox
@@ -76,6 +76,10 @@ class MainApp(QtWidgets.QMainWindow):
         self.connect_unity_window = QtWidgets.QWidget()
         self.connect_unity_ui = Ui_ConnectUnityWindow()
         self.connect_unity_ui.setupUi(self.connect_unity_window)
+         # 그래프 추가
+        #self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
+        #self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
+        #self.layout.addWidget(self.canvas)
 
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
@@ -361,11 +365,14 @@ class MainApp(QtWidgets.QMainWindow):
     #===========유니티 연동 함수=======#
         self.update_button_states(starting=True)
         self.start_buzzer(self.buzz_duration)
-        #============================
-        #======================
-        #========유니티 연동 함수
-        #======================
-        #===========================
+        self.is_running = True
+        self.multi_lidar_services.multi_lidar_driver.start_lidars()
+        while self.is_running:
+            data_strings=self.multi_lidar_services.view_datas()
+            print(data_strings)
+            
+            
+            QApplication.processEvents()
         self.stop_function()
     #============================라이다 구동함수 끝================================================================================
     def start_buzzer(self, duration):
@@ -523,6 +530,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.Button_skeletonview.clicked.connect(self.show_skeleton_view_window)
         self.ui.Button_csvsave.clicked.connect(self.show_save_csv_window)
         self.ui.Button_unity.clicked.connect(self.show_connect_unity_window)
+        self.ui.Button_usbconnection.clicked.connect(self.connect_lidars_with_usb)
+        self.ui.Button_wificonnection.clicked.connect(self.connect_lidars_with_usb)
 
         # SettingWindow 이벤트 연결
         self.setting_ui.List_env.itemClicked.connect(self.select_env)
@@ -581,7 +590,8 @@ class MainApp(QtWidgets.QMainWindow):
             self.save_csv_ui.Button_start.setEnabled(True)
             self.connect_unity_ui.Button_start.setEnabled(True)
             self.save_csv_ui.Button_countforsequence.setEnabled(False)
-
+    def connect_lidars_with_usb():
+        print("1")
     def plot_real_time(self,ax,points):
         #app = QApplication(sys.argv)
         

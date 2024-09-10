@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'QT\ui\SaveCsvWindow.ui'
+# Form implementation generated from reading ui file 'lidar_interface\ui\SaveCsvWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #

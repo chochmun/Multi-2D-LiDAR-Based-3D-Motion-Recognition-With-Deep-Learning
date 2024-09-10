@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'QT\ui\MainWindow.ui'
+# Form implementation generated from reading ui file 'lidar_interface\ui\MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
         self.Button_dataview.setStyleSheet("background-color: rgb(221, 236, 255);")
         self.Button_dataview.setObjectName("Button_dataview")
         self.Button_setting = QtWidgets.QPushButton(self.StartWindow)
-        self.Button_setting.setGeometry(QtCore.QRect(420, 20, 161, 41))
+        self.Button_setting.setGeometry(QtCore.QRect(420, 10, 161, 41))
         self.Button_setting.setStyleSheet("background-color: rgb(213, 218, 227);")
         self.Button_setting.setCheckable(False)
         self.Button_setting.setChecked(False)
@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         self.Button_envset.setStyleSheet("background-color: rgb(221, 236, 255);")
         self.Button_envset.setObjectName("Button_envset")
         self.Button_skeletonview = QtWidgets.QPushButton(self.StartWindow)
-        self.Button_skeletonview.setGeometry(QtCore.QRect(30, 190, 161, 51))
+        self.Button_skeletonview.setGeometry(QtCore.QRect(30, 120, 161, 51))
         self.Button_skeletonview.setStyleSheet("background-color: rgb(221, 236, 255);")
         self.Button_skeletonview.setObjectName("Button_skeletonview")
         self.Button_csvsave = QtWidgets.QPushButton(self.StartWindow)
@@ -69,6 +69,30 @@ class Ui_MainWindow(object):
         self.graphicsView.setStyleSheet("\n"
 "background-image: url(C:/capstone_data/Multi-2d-Lidar-sensors-motion-reconition/QT/qrc//images//background.JPG);")
         self.graphicsView.setObjectName("graphicsView")
+        self.Button_usbconnection = QtWidgets.QPushButton(self.StartWindow)
+        self.Button_usbconnection.setGeometry(QtCore.QRect(510, 60, 71, 41))
+        font = QtGui.QFont()
+        font.setFamily("굴림")
+        font.setPointSize(8)
+        self.Button_usbconnection.setFont(font)
+        self.Button_usbconnection.setStyleSheet("background-color: rgb(213, 218, 227);")
+        self.Button_usbconnection.setCheckable(False)
+        self.Button_usbconnection.setChecked(False)
+        self.Button_usbconnection.setAutoRepeatDelay(300)
+        self.Button_usbconnection.setAutoDefault(False)
+        self.Button_usbconnection.setObjectName("Button_usbconnection")
+        self.Button_wificonnection = QtWidgets.QPushButton(self.StartWindow)
+        self.Button_wificonnection.setGeometry(QtCore.QRect(420, 60, 71, 41))
+        font = QtGui.QFont()
+        font.setFamily("굴림")
+        font.setPointSize(8)
+        self.Button_wificonnection.setFont(font)
+        self.Button_wificonnection.setStyleSheet("background-color: rgb(213, 218, 227);")
+        self.Button_wificonnection.setCheckable(False)
+        self.Button_wificonnection.setChecked(False)
+        self.Button_wificonnection.setAutoRepeatDelay(300)
+        self.Button_wificonnection.setAutoDefault(False)
+        self.Button_wificonnection.setObjectName("Button_wificonnection")
         self.graphicsView.raise_()
         self.Button_dataview.raise_()
         self.Button_setting.raise_()
@@ -78,6 +102,8 @@ class Ui_MainWindow(object):
         self.label.raise_()
         self.label_2.raise_()
         self.Button_unity.raise_()
+        self.Button_usbconnection.raise_()
+        self.Button_wificonnection.raise_()
         MainWindow.setCentralWidget(self.StartWindow)
 
         self.retranslateUi(MainWindow)
@@ -94,6 +120,10 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "View"))
         self.label_2.setText(_translate("MainWindow", "Utility"))
         self.Button_unity.setText(_translate("MainWindow", "Connect Unity"))
+        self.Button_usbconnection.setText(_translate("MainWindow", "Lidar\n"
+"Connection"))
+        self.Button_wificonnection.setText(_translate("MainWindow", "Wi-Fi\n"
+"Connection"))
 import qrc.background_rc
 
 

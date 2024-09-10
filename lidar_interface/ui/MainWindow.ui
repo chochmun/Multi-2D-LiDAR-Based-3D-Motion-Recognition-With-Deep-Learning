@@ -37,7 +37,7 @@
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>20</y>
+      <y>10</y>
       <width>161</width>
       <height>41</height>
      </rect>
@@ -81,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>190</y>
+      <y>120</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -181,6 +181,76 @@
 background-image: url(C:/capstone_data/Multi-2d-Lidar-sensors-motion-reconition/QT/qrc//images//background.JPG);</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="Button_usbconnection">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>60</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>굴림</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(213, 218, 227);</string>
+    </property>
+    <property name="text">
+     <string>Lidar
+Connection</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoRepeatDelay">
+     <number>300</number>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button_wificonnection">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>60</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>굴림</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(213, 218, 227);</string>
+    </property>
+    <property name="text">
+     <string>Wi-Fi
+Connection</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoRepeatDelay">
+     <number>300</number>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
    <zorder>graphicsView</zorder>
    <zorder>Button_dataview</zorder>
    <zorder>Button_setting</zorder>
@@ -190,6 +260,8 @@ background-image: url(C:/capstone_data/Multi-2d-Lidar-sensors-motion-reconition/
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>Button_unity</zorder>
+   <zorder>Button_usbconnection</zorder>
+   <zorder>Button_wificonnection</zorder>
   </widget>
  </widget>
  <resources>
