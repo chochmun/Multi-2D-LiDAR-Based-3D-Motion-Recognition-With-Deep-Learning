@@ -136,7 +136,7 @@ class Ui_SettingWindow(object):
         self.TabSetting.addTab(self.Tab_model, "")
 
         self.retranslateUi(SettingWindow)
-        self.TabSetting.setCurrentIndex(0)
+        self.TabSetting.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(SettingWindow)
 
     def retranslateUi(self, SettingWindow):
@@ -161,9 +161,9 @@ class Ui_SettingWindow(object):
         self.Label_port_top.setText(_translate("SettingWindow", "Port Top :"))
         self.Label_port_mid.setText(_translate("SettingWindow", "Port Mid :"))
         self.Label_port_bot.setText(_translate("SettingWindow", "Port Bot :"))
-        self.Input_port_top.setText(_translate("SettingWindow", "1"))
-        self.Input_port_mid.setText(_translate("SettingWindow", "2"))
-        self.Input_port_bot.setText(_translate("SettingWindow", "3"))
+        self.Input_port_top.setText(_translate("SettingWindow", "None"))
+        self.Input_port_mid.setText(_translate("SettingWindow", "None"))
+        self.Input_port_bot.setText(_translate("SettingWindow", "None"))
         self.Label_explain.setText(_translate("SettingWindow", "메인 메뉴의 Data View에서\n"
 "인식되는 라이다의 상,중,하 위치를 보고\n"
 "필요 시 Port 위치를 재배열하십시오.\n"

@@ -1,6 +1,5 @@
 <RCC>
   <qresource prefix="newPrefix">
-    <file>images/lidar_image.JPG</file>
     <file>images/background.JPG</file>
   </qresource>
 </RCC>

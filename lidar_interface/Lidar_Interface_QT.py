@@ -227,14 +227,14 @@ class MainApp(QtWidgets.QMainWindow):
             message="path is wrong"
             self.show_error_message(message)
         print(f"Settings Saved: MaxDist={self.max_dist}, BuzzDuration={self.buzz_duration}, Angle={self.selected_angle}, Env={self.selected_env}, Model={self.selected_model}")
-        self.save_settings_to_file()
+        self.save_settings_to_jsonfile()
 
     def save_csv_settings(self):
         self.frames = int(self.save_csv_ui.Input_frames.text())
         self.name = self.save_csv_ui.Input_name.text()
         self.selected_pose = self.save_csv_ui.FunLabel_selectedpose.text()
         print(f"CSV Settings: Frames={self.frames}, Name={self.name}, Pose={self.selected_pose}")
-        self.save_settings_to_file()
+        self.save_settings_to_jsonfile()
     def start_new_env_save(self):
         self.start_buzzer(self.buzz_duration)
         #============================
@@ -253,7 +253,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.new_env_loading_time = int(self.env_set_ui.Input_loadingtime.text())
         self.new_env_margin_dist = int(self.env_set_ui.Input_margindist.text())
         print(f"New Environment Settings: json file name={self.new_env_name}, Loading time={self.new_env_loading_time}, Margin dist={self.new_env_margin_dist}")
-        self.save_settings_to_file()
+        self.save_settings_to_jsonfile()
     ##=================================라이다 직접 구동 섹션====================================================##########
     #======데이터 뷰 함수=======#
     def start_data_view_function(self):
@@ -434,7 +434,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.multi_lidar_services.use_filter=False
         print(self.multi_lidar_services.use_filter)
     
-    def save_settings_to_file(self):
+    def save_settings_to_jsonfile(self):
         """현재 설정을 JSON 파일로 저장"""
         settings = {
             "max_dist": self.max_dist,
@@ -513,8 +513,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.env_set_ui.Input_json.setText(new_env_name)
         self.env_set_ui.Input_loadingtime.setText(str(self.new_env_loading_time))
         self.env_set_ui.Input_margindist.setText(str(self.new_env_margin_dist))
-        #self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
-
+        
         print("UI updated from loaded settings.")
     def connect_ui_buttons(self):
         """모든 UI 버튼 이벤트를 연결"""
@@ -588,9 +587,12 @@ class MainApp(QtWidgets.QMainWindow):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
             self.multi_lidar_services = MultiLidarServices()
+            
             #프로그램 시작시 settings 디폴트값으로 초기화
             tmp=self.multi_lidar_services.multi_lidar_driver.detect_lidar_ports()
             self.setting_ui.FuncLable_portlist.setText(", ".join(tmp))
+            self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+
             self.set_buttons_by_connection()
         except IndexError as e:
             print(f"Error: {e}")
@@ -601,6 +603,8 @@ class MainApp(QtWidgets.QMainWindow):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
             self.multi_lidar_services = MultiLidarServices()
+            self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+
             self.set_buttons_by_connection()
         except IndexError as e:
             print(f"Error: {e}")

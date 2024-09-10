@@ -2,7 +2,7 @@
     "max_dist": 2000,
     "buzz_duration": 3,
     "selected_angle": 90,
-    "selected_env": "def.json",
+    "selected_env": "default.json",
     "selected_model": "selected model file",
     "ports_choice": [
         1,
@@ -12,7 +12,7 @@
     "frames": 500,
     "name": "default",
     "selected_pose": "0",
-    "new_env_name": "def.json",
+    "new_env_name": "default.json",
     "new_env_loading_time": 7,
     "new_env_margin_dist": 40
 }

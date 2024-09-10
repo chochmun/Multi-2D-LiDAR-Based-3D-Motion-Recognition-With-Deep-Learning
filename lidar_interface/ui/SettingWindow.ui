@@ -70,7 +70,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="Tab_basic">
     <attribute name="title">
@@ -307,7 +307,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>1</string>
+      <string>None</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -323,7 +323,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>2</string>
+      <string>None</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -339,7 +339,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>3</string>
+      <string>None</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
