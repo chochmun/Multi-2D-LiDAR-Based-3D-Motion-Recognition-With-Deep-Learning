@@ -32,9 +32,9 @@ class MainApp(QtWidgets.QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.folder_name_qt= "C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\\"
         #이전 사용자의 세팅값을 기억
-        self.SETTINGS_FILE="C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\saved_settings.json"
+        self.SETTINGS_FILE= self.folder_name_qt +"saved_settings.json"
         self.settings_loaded = False
         if os.path.exists(self.SETTINGS_FILE):
             self.load_settings()
@@ -45,7 +45,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.multi_lidar_services=None
         
         self.ports_choice=[1,2,3]
-        self.envpath="C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\env_jsons"
+        self.envpath=self.folder_name_qt+"env_jsons"
         
         # 각 윈도우 객체 생성
         self.setting_window = QtWidgets.QWidget()
@@ -119,7 +119,8 @@ class MainApp(QtWidgets.QMainWindow):
 
         self.connect_ui_buttons()
         #Start 버튼 초기 활성화 /Stop 버튼 초기 비활성화
-        self.set_buttons_initial_state()
+        self.set_buttons_by_connection()
+        
 
 
 
@@ -476,7 +477,7 @@ class MainApp(QtWidgets.QMainWindow):
     def default_initialization(self):
         """기본 초기화 설정"""
         self.ports_choice = [1, 2, 3]
-        self.envpath = "C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\env_jsons"
+        self.envpath = self.folder_name_qt+"env_jsons"
         self.max_dist = 1000
         self.buzz_duration = 5
         self.selected_angle = 90
@@ -562,27 +563,27 @@ class MainApp(QtWidgets.QMainWindow):
         self.save_csv_ui.Button_stop.clicked.connect(self.stop_function)
         self.connect_unity_ui.Button_start.clicked.connect(self.start_connect_unity_function)
         self.connect_unity_ui.Button_stop.clicked.connect(self.stop_function)
-    def set_buttons_initial_state(self):
+
+    def set_buttons_by_connection(self):
         if self.multi_lidar_services is None:
-            # 라이다 서비스가 없으면 Start/Stop 버튼을 비활성화
+            # 라이다 서비스가 없으면 Start 버튼을 비활성화
             self.data_view_ui.Button_start.setEnabled(False)
-            self.data_view_ui.Button_stop.setEnabled(False)
             self.skeleton_view_ui.Button_start.setEnabled(False)
-            self.skeleton_view_ui.Button_stop.setEnabled(False)
             self.save_csv_ui.Button_start.setEnabled(False)
-            self.save_csv_ui.Button_stop.setEnabled(False)
             self.connect_unity_ui.Button_start.setEnabled(False)
+            # 라이다 서비스가 없으면 Stop 버튼을 비활성화
+            self.data_view_ui.Button_stop.setEnabled(False)
+            self.skeleton_view_ui.Button_stop.setEnabled(False)
+            self.save_csv_ui.Button_stop.setEnabled(False)
             self.connect_unity_ui.Button_stop.setEnabled(False)
 
-            # Count for Sequence 버튼도 비활성화
-            self.save_csv_ui.Button_countforsequence.setEnabled(False)
         else:
             # 라이다 서비스가 있을 때 기본 버튼 활성화
             self.data_view_ui.Button_start.setEnabled(True)
             self.skeleton_view_ui.Button_start.setEnabled(True)
             self.save_csv_ui.Button_start.setEnabled(True)
             self.connect_unity_ui.Button_start.setEnabled(True)
-            self.save_csv_ui.Button_countforsequence.setEnabled(False)
+
     def connect_lidars_with_usb(self):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
@@ -590,6 +591,7 @@ class MainApp(QtWidgets.QMainWindow):
             #프로그램 시작시 settings 디폴트값으로 초기화
             tmp=self.multi_lidar_services.multi_lidar_driver.detect_lidar_ports()
             self.setting_ui.FuncLable_portlist.setText(", ".join(tmp))
+            self.set_buttons_by_connection()
         except IndexError as e:
             print(f"Error: {e}")
             self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
@@ -599,6 +601,7 @@ class MainApp(QtWidgets.QMainWindow):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
             self.multi_lidar_services = MultiLidarServices()
+            self.set_buttons_by_connection()
         except IndexError as e:
             print(f"Error: {e}")
             self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리

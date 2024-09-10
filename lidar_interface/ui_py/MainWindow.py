@@ -67,7 +67,7 @@ class Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.StartWindow)
         self.graphicsView.setGeometry(QtCore.QRect(-40, -10, 661, 331))
         self.graphicsView.setStyleSheet("\n"
-"background-image: url(C:/capstone_data/Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning/qrc//images//background.JPG);")
+"background-image: url(C:/capstone_data/Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning/lidar_interface/images/background.JPG);")
         self.graphicsView.setObjectName("graphicsView")
         self.Button_usbconnection = QtWidgets.QPushButton(self.StartWindow)
         self.Button_usbconnection.setGeometry(QtCore.QRect(510, 60, 71, 41))
