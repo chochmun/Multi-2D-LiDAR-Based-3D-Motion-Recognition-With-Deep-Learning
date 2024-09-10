@@ -367,21 +367,15 @@ class MainApp(QtWidgets.QMainWindow):
         self.is_running = True
         self.multi_lidar_services.multi_lidar_driver.start_lidars()
 
-        # 타이머 설정: 0.05초마다 업데이트
-        self.timer = QtCore.QTimer(self)
-        self.timer.setInterval(100)
-        self.timer.timeout.connect(self.mplcanvas.update_plot)
-        self.timer.start()
-        
         while self.is_running:
             data_strings=self.multi_lidar_services.view_datas()
             print(data_strings)
-            
+            self.mplcanvas.update_plot()
             
             
             QApplication.processEvents()
         self.stop_function()
-        self.timer.stop()
+        
     #============================라이다 구동함수 끝================================================================================
     def start_buzzer(self, duration):
         print(f"Buzzing for {duration} seconds...")
