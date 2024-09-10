@@ -22,7 +22,7 @@ class MplCanvas(FigureCanvas):
         self.setFixedSize(700, 250)  # 실제 캔버스의 고정 크기 설정
         self.init_plot(angle)
 
-        self.scenario = [0, 0, 2, 0, 2, 5, 0, 4, 1, 1, 3, 9, 5,6]  # 시나리오 배열
+        self.scenario = [1,1,1,5,1,1,3,1,5,6,1,1,1,1,7]  # 시나리오 배열
         self.scenario_index = 0  # 현재 시나리오 인덱스
         self.motion_dict = {
             0: [0.9957, 0.2752, 0.1518, 0.0477, 0.4664, 0.2625, 0.2588, 0.3517, 0.3893, 0.3076],
@@ -81,7 +81,7 @@ class MplCanvas(FigureCanvas):
                     bar.set_color('#17FD79')  # 나머지 값은 기본 색으로 설정
 
         self.draw()  # 그래프 다시 그리기
-    def update_plot(self):
+    def update_plot_scenario(self):
         # 시나리오 인덱스에 맞는 motion_dict 값을 사용
         current_key = self.scenario[self.scenario_index]
         values1 = np.zeros(10)  # 10개의 값을 가진 배열 초기화
@@ -93,11 +93,13 @@ class MplCanvas(FigureCanvas):
         for i, bar in enumerate(self.bar1):
             bar.set_width(values1[i])
             if values1[i] == max_val1:
+                idx_max_val1=i
                 bar.set_color('#0EB2F1')
             else:
                 bar.set_color('#17FD79')
 
         # 두 번째 서브플롯 업데이트 (필요 시)
+        idx_max_val2=None
         if self.angle > 91:
             values2 = np.zeros(10)
             values2[:len(self.motion_dict[current_key])] = self.motion_dict[current_key]
@@ -106,6 +108,7 @@ class MplCanvas(FigureCanvas):
             for i, bar in enumerate(self.bar2):
                 bar.set_width(values2[i])
                 if values2[i] == max_val2:
+                    idx_max_val2=i
                     bar.set_color('#0EB2F1')
                 else:
                     bar.set_color('#17FD79')
@@ -114,3 +117,4 @@ class MplCanvas(FigureCanvas):
         self.scenario_index = (self.scenario_index + 1) % len(self.scenario)
 
         self.draw()  # 그래프 다시 그리기
+        return [idx_max_val1,idx_max_val2]

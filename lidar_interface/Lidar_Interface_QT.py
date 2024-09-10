@@ -25,7 +25,7 @@ import csv
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+from pynput.keyboard import Key, Controller
 
 class MainApp(QtWidgets.QMainWindow):
     
@@ -45,10 +45,12 @@ class MainApp(QtWidgets.QMainWindow):
             self.default_initialization()
         
         self.multi_lidar_services=None
-        
         self.ports_choice=[1,2,3]
         self.envpath=self.folder_name_qt+"env_jsons"
+        self.key_mapping_play1,self.key_mapping_play2=self.load_key_mapping()
         
+        print(self.key_mapping_play1)
+        print(self.key_mapping_play2)
         # 각 윈도우 객체 생성
         self.setting_window = QtWidgets.QWidget()
         self.setting_ui = Ui_SettingWindow()
@@ -165,6 +167,20 @@ class MainApp(QtWidgets.QMainWindow):
                 for key, value in poses.items():
                     display_text = f"{key}: {value}"
                     self.save_csv_ui.List_pose.addItem(display_text)
+    def load_key_mapping(self):
+        return {
+            #0: Stand motion -> None press
+            1: Key.up,2: Key.down,3: Key.left,4: Key.right,
+            5: Key.space,  
+            6: 't',7: 'y',8: 'u',
+            9: 'p'
+        }, {
+            #0: Stand motion -> None press
+            1: 'w',   2: 'a',    3: 's', 4: 'd',
+            5: 'r',
+            6: 't',7: 'y',8: 'u',  
+            9: 'p'    
+        }
 
     def select_env(self, item):
         self.setting_ui.FuncLabel_selected_env.setText(item.text())
@@ -362,15 +378,22 @@ class MainApp(QtWidgets.QMainWindow):
 
     def start_connect_unity_function(self):
     #===========유니티 연동 함수=======#
+        self.keyboard = Controller()
         self.update_button_states(starting=True)
         self.start_buzzer(self.buzz_duration)
         self.is_running = True
         self.multi_lidar_services.multi_lidar_driver.start_lidars()
-
+        
         while self.is_running:
-            data_strings=self.multi_lidar_services.view_datas()
-            print(data_strings)
-            self.mplcanvas.update_plot()
+            #data_strings=self.multi_lidar_services.view_datas()
+            start_time=round(time.time(),5)
+            idx_best_motion1,idx_best_motion2=self.mplcanvas.update_plot_scenario()
+            print(time.time()-start_time)
+            #print(idx_best_motion1)
+            #motion_accuracies=self.multi_lidar_services.get_motion_by_NN()
+            #idx_best_motion = self.mplcanvas.update_plot(motion_accuracies)
+
+            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
             
             
             QApplication.processEvents()
@@ -653,7 +676,19 @@ class MainApp(QtWidgets.QMainWindow):
         ax.set_zlabel('Z axis')
 
         plt.pause(0.01)  # 플롯 갱신 대기 시간 (0.1초)
+    def press_keyboard(self,idx_best_motion, player_keys):
 
+            if idx_best_motion in player_keys:
+                key = player_keys[idx_best_motion]
+                print(key)
+                if isinstance(key, str):  # 문자열로 주어진 키는 직접 char로 처리
+                    self.keyboard.press(key)
+                    time.sleep(0.2)  # 각 키 입력 동작 간 n초 대기
+                    self.keyboard.release(key)
+                else:  # pynput의 Key 값으로 처리되는 경우
+                    self.keyboard.press(key)
+                    time.sleep(0.2)  # 각 키 입력 동작 간 n초 대기
+                    self.keyboard.release(key)
 class WorkerThread(threading.Thread):
     def __init__(self):
         super().__init__()
