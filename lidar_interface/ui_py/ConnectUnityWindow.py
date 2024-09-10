@@ -1,9 +1,9 @@
 import sys
 from PyQt5 import QtGui,QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-import numpy as np
+
+
+
 
 # 기존에 덮어쓴 ConnectUnityWindow.py의 UI 클래스
 class Ui_ConnectUnityWindow(object):

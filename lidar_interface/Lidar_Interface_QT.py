@@ -13,10 +13,11 @@ from ui_py.DataViewWindow import Ui_DataViewWindow
 from ui_py.EnvSetWindow import Ui_EnvSetWindow
 from ui_py.SkeletonViewWindow import  Ui_SkeletonViewWindow
 from ui_py.SaveCsvWindow import Ui_SaveCsvWindow
-from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow, MplCanvas
-from PyQt5.QtWidgets import QApplication
+from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow
+from ui_py.ClassAccuracyGraph import   MplCanvas
+from PyQt5.QtWidgets import QApplication, QMessageBox,QVBoxLayout
 from lidar_services.multi_lidar_services import MultiLidarServices
-from PyQt5.QtWidgets import QMessageBox
+
 from datetime import datetime
 import csv
 
@@ -33,7 +34,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         #이전 사용자의 세팅값을 기억
-        self.SETTINGS_FILE="C:\capstone_data\Multi-2d-Lidar-sensors-motion-reconition\QT\saved_settings.json"
+        self.SETTINGS_FILE="C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\saved_settings.json"
         self.settings_loaded = False
         if os.path.exists(self.SETTINGS_FILE):
             self.load_settings()
@@ -50,7 +51,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
             self.multi_lidar_services = None
         self.ports_choice=[1,2,3]
-        self.envpath="C:\capstone_data\Multi-2d-Lidar-sensors-motion-reconition\QT\env_jsons"
+        self.envpath="C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\env_jsons"
         
         # 각 윈도우 객체 생성
         self.setting_window = QtWidgets.QWidget()
@@ -77,9 +78,9 @@ class MainApp(QtWidgets.QMainWindow):
         self.connect_unity_ui = Ui_ConnectUnityWindow()
         self.connect_unity_ui.setupUi(self.connect_unity_window)
          # 그래프 추가
-        #self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
-        #self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
-        #self.layout.addWidget(self.canvas)
+        self.canvas = MplCanvas(self.connect_unity_window)  # MplCanvas로 그래프 생성
+        self.layout = QtWidgets.QVBoxLayout(self.connect_unity_ui.graph_frame)  # graph_frame은 그래프를 넣을 UI 요소
+        self.layout.addWidget(self.canvas)
 
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
@@ -152,14 +153,14 @@ class MainApp(QtWidgets.QMainWindow):
             self.setting_ui.List_env.addItems(env_files)
 
     def load_model_files(self):
-        model_files_path = "QT/model_files"
+        model_files_path = "lidar_interface/model_files"
         self.setting_ui.List_model.clear()
         if os.path.exists(model_files_path):
             model_files = os.listdir(model_files_path)
             self.setting_ui.List_model.addItems(model_files)
 
     def load_pose_files(self):
-        pose_file_path = "QT/poses.json"
+        pose_file_path = "lidar_interface/poses.json"
         self.save_csv_ui.List_pose.clear()
         if os.path.exists(pose_file_path):
             with open(pose_file_path, 'r', encoding='utf-8') as f:
@@ -483,7 +484,7 @@ class MainApp(QtWidgets.QMainWindow):
     def default_initialization(self):
         """기본 초기화 설정"""
         self.ports_choice = [1, 2, 3]
-        self.envpath = "C:\capstone_data\Multi-2d-Lidar-sensors-motion-reconition\QT\env_jsons"
+        self.envpath = "C:\capstone_data\Multi-2D-LiDAR-Based-3D-Motion-Recognition-With-Deep-Learning\lidar_interface\env_jsons"
         self.max_dist = 1000
         self.buzz_duration = 5
         self.selected_angle = 90

@@ -1,4 +1,8 @@
 # MplCanvas 클래스 정의: 그래프 생성 및 실시간 업데이트
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import numpy as np
+
 class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=7, height=2.5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
