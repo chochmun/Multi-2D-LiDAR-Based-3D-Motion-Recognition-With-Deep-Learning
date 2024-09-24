@@ -390,10 +390,11 @@ class MainApp(QtWidgets.QMainWindow):
             idx_best_motion1,idx_best_motion2=self.mplcanvas.update_plot_scenario()
             print(time.time()-start_time)
             #print(idx_best_motion1)
-            #motion_accuracies=self.multi_lidar_services.get_motion_by_NN()
-            #idx_best_motion = self.mplcanvas.update_plot(motion_accuracies)
 
-            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
+            #실시간 모션추론
+            motion_accuracies=self.multi_lidar_services.get_motion_by_NN()
+            idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot(motion_accuracies)
+            self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
             
             
             QApplication.processEvents()
