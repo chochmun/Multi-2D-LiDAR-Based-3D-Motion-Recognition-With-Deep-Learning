@@ -11,7 +11,7 @@ from ui_py.MainWindow import Ui_MainWindow
 from ui_py.SettingWindow import Ui_SettingWindow
 from ui_py.DataViewWindow import Ui_DataViewWindow
 from ui_py.EnvSetWindow import Ui_EnvSetWindow
-from ui_py.SkeletonViewWindow import  Ui_SkeletonViewWindow
+from ui_py.TransferLearnWindow import  Ui_TransferLearnWindow
 from ui_py.SaveCsvWindow import Ui_SaveCsvWindow
 from ui_py.ConnectUnityWindow import  Ui_ConnectUnityWindow
 
@@ -64,9 +64,9 @@ class MainApp(QtWidgets.QMainWindow):
         self.env_set_ui = Ui_EnvSetWindow()
         self.env_set_ui.setupUi(self.env_set_window)
 
-        self.skeleton_view_window = QtWidgets.QWidget()
-        self.skeleton_view_ui = Ui_SkeletonViewWindow()
-        self.skeleton_view_ui.setupUi(self.skeleton_view_window)
+        self.transfer_learn_window = QtWidgets.QWidget()
+        self.transfer_learn_ui = Ui_TransferLearnWindow()
+        self.transfer_learn_ui.setupUi(self.transfer_learn_window)
 
         self.save_csv_window = QtWidgets.QWidget()
         self.save_csv_ui = Ui_SaveCsvWindow()
@@ -133,12 +133,12 @@ class MainApp(QtWidgets.QMainWindow):
     def set_buttons_initial_state(self):
         # Stop 버튼 비활성화 및 Start 버튼 활성화
         self.data_view_ui.Button_stop.setEnabled(False)
-        self.skeleton_view_ui.Button_stop.setEnabled(False)
+        self.transfer_learn_ui.Button_stop.setEnabled(False)
         self.save_csv_ui.Button_stop.setEnabled(False)
         self.connect_unity_ui.Button_stop.setEnabled(False)
 
         self.data_view_ui.Button_start.setEnabled(True)
-        self.skeleton_view_ui.Button_start.setEnabled(True)
+        self.transfer_learn_ui.Button_start.setEnabled(True)
         self.save_csv_ui.Button_start.setEnabled(True)
         self.connect_unity_ui.Button_start.setEnabled(True)
 
@@ -201,8 +201,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.env_set_window.show()
         self.close()
 
-    def show_skeleton_view_window(self):
-        self.skeleton_view_window.show()
+    def show_transfer_learn_window(self):
+        self.transfer_learn_window.show()
         self.close()
 
     def show_save_csv_window(self):
@@ -218,7 +218,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.setting_window.close()
         self.data_view_window.close()
         self.env_set_window.close()
-        self.skeleton_view_window.close()
+        self.transfer_learn_window.close()
         self.save_csv_window.close()
         self.connect_unity_window.close()
 
@@ -301,7 +301,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.stop_function()
         
     #======스켈레톤 뷰 함수=======#
-    def start_skeleton_view_function(self):
+    def start_transfer_learn_function(self):
         
         self.update_button_states(starting=True)
         self.start_buzzer(self.buzz_duration)
@@ -425,8 +425,8 @@ class MainApp(QtWidgets.QMainWindow):
             print("Activating stop button")  # 디버그 메시지
             self.data_view_ui.Button_start.setEnabled(False)
             self.data_view_ui.Button_stop.setEnabled(True)
-            self.skeleton_view_ui.Button_start.setEnabled(False)
-            self.skeleton_view_ui.Button_stop.setEnabled(True)
+            self.transfer_learn_ui.Button_start.setEnabled(False)
+            self.transfer_learn_ui.Button_stop.setEnabled(True)
             self.save_csv_ui.Button_start.setEnabled(False)
             self.save_csv_ui.Button_stop.setEnabled(True)
             self.connect_unity_ui.Button_start.setEnabled(False)
@@ -552,7 +552,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.Button_setting.clicked.connect(self.show_setting_window)
         self.ui.Button_dataview.clicked.connect(self.show_data_view_window)
         self.ui.Button_envset.clicked.connect(self.show_env_set_window)
-        self.ui.Button_skeletonview.clicked.connect(self.show_skeleton_view_window)
+        self.ui.Button_transferlearn.clicked.connect(self.show_transfer_learn_window)
         self.ui.Button_csvsave.clicked.connect(self.show_save_csv_window)
         self.ui.Button_unity.clicked.connect(self.show_connect_unity_window)
         self.ui.Button_usbconnection.clicked.connect(self.connect_lidars_with_usb)
@@ -573,8 +573,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.env_set_ui.Button_save.clicked.connect(self.start_new_env_save)
         self.env_set_ui.Button_adjust.clicked.connect(self.new_env_settings)
 
-        # SkeletonViewWindow 이벤트 연결
-        self.skeleton_view_ui.Button_back.clicked.connect(self.show_main_window)
+        # Transfer_learn 이벤트 연결
+        self.transfer_learn_ui.Button_back.clicked.connect(self.show_main_window)
 
         # SaveCsvWindow 이벤트 연결
         self.save_csv_ui.List_pose.itemClicked.connect(self.select_pose)
@@ -588,8 +588,8 @@ class MainApp(QtWidgets.QMainWindow):
         # Start/Stop 버튼 연결
         self.data_view_ui.Button_start.clicked.connect(self.start_data_view_function)
         self.data_view_ui.Button_stop.clicked.connect(self.stop_function)
-        self.skeleton_view_ui.Button_start.clicked.connect(self.start_skeleton_view_function)
-        self.skeleton_view_ui.Button_stop.clicked.connect(self.stop_function)
+        self.transfer_learn_ui.Button_start.clicked.connect(self.start_transfer_learn_function)
+        self.transfer_learn_ui.Button_stop.clicked.connect(self.stop_function)
         self.save_csv_ui.Button_start.clicked.connect(self.start_save_csv_function)
         self.save_csv_ui.Button_stop.clicked.connect(self.stop_function)
         self.connect_unity_ui.Button_start.clicked.connect(self.start_connect_unity_function)
@@ -599,19 +599,19 @@ class MainApp(QtWidgets.QMainWindow):
         if self.multi_lidar_services is None:
             # 라이다 서비스가 없으면 Start 버튼을 비활성화
             self.data_view_ui.Button_start.setEnabled(False)
-            self.skeleton_view_ui.Button_start.setEnabled(False)
+            self.transfer_learn_ui.Button_start.setEnabled(False)
             self.save_csv_ui.Button_start.setEnabled(False)
             self.connect_unity_ui.Button_start.setEnabled(False)
             # 라이다 서비스가 없으면 Stop 버튼을 비활성화
             self.data_view_ui.Button_stop.setEnabled(False)
-            self.skeleton_view_ui.Button_stop.setEnabled(False)
+            self.transfer_learn_ui.Button_stop.setEnabled(False)
             self.save_csv_ui.Button_stop.setEnabled(False)
             self.connect_unity_ui.Button_stop.setEnabled(False)
 
         else:
             # 라이다 서비스가 있을 때 기본 버튼 활성화
             self.data_view_ui.Button_start.setEnabled(True)
-            self.skeleton_view_ui.Button_start.setEnabled(True)
+            self.transfer_learn_ui.Button_start.setEnabled(True)
             self.save_csv_ui.Button_start.setEnabled(True)
             self.connect_unity_ui.Button_start.setEnabled(True)
 

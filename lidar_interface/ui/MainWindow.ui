@@ -77,11 +77,11 @@
      <string>Environment Set</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Button_skeletonview">
+   <widget class="QPushButton" name="Button_transferlearn">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>120</y>
+      <x>210</x>
+      <y>190</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -90,7 +90,7 @@
      <string notr="true">background-color: rgb(221, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Skeleton View</string>
+     <string>Transfer Learning</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Button_csvsave">
@@ -154,8 +154,8 @@
    <widget class="QPushButton" name="Button_unity">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>190</y>
+      <x>30</x>
+      <y>120</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -164,7 +164,8 @@
      <string notr="true">background-color: rgb(221, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Connect Unity</string>
+     <string>Motion Estimation
+And Unity</string>
     </property>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
@@ -257,7 +258,7 @@ Connection</string>
    <zorder>Button_dataview</zorder>
    <zorder>Button_setting</zorder>
    <zorder>Button_envset</zorder>
-   <zorder>Button_skeletonview</zorder>
+   <zorder>Button_transferlearn</zorder>
    <zorder>Button_csvsave</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
