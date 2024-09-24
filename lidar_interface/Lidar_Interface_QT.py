@@ -317,6 +317,27 @@ class MainApp(QtWidgets.QMainWindow):
         self.stop_function()
         
     #======스켈레톤 뷰 함수=======#
+
+    def start_skeleton_view_function(self):
+        
+        self.update_button_states(starting=True)
+        self.start_buzzer(self.buzz_duration)
+        QApplication.processEvents() #button update
+
+        self.is_running = True
+        self.multi_lidar_services.multi_lidar_driver.start_lidars()
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        time.sleep(1)
+        
+        while self.is_running:
+            
+            points=self.multi_lidar_services.get_detected_point()
+            self.plot_real_time(ax,points)
+            QApplication.processEvents()
+        self.stop_function()
+
+    
     def start_transfer_learn_function(self):
         
         self.update_button_states(starting=True)
@@ -620,6 +641,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.data_view_ui.Button_stop.clicked.connect(self.stop_function)
         self.transfer_learn_ui.Button_start.clicked.connect(self.start_transfer_learn_function)
         self.transfer_learn_ui.Button_stop.clicked.connect(self.stop_function)
+        self.skeleton_view_ui.Button_start.clicked.connect(self.start_skeleton_view_function)
+        self.skeleton_view_ui.Button_stop.clicked.connect(self.stop_function)
         
         self.save_csv_ui.Button_start.clicked.connect(self.start_save_csv_function)
         self.save_csv_ui.Button_stop.clicked.connect(self.stop_function)
