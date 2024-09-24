@@ -155,7 +155,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>120</y>
+      <y>190</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -254,6 +254,22 @@ Connection</string>
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="Button_3dview">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>120</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(221, 236, 255);</string>
+    </property>
+    <property name="text">
+     <string>3D View</string>
+    </property>
+   </widget>
    <zorder>graphicsView</zorder>
    <zorder>Button_dataview</zorder>
    <zorder>Button_setting</zorder>
@@ -265,6 +281,7 @@ Connection</string>
    <zorder>Button_unity</zorder>
    <zorder>Button_usbconnection</zorder>
    <zorder>Button_wificonnection</zorder>
+   <zorder>Button_3dview</zorder>
   </widget>
  </widget>
  <resources>

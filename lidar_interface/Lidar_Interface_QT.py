@@ -76,6 +76,10 @@ class MainApp(QtWidgets.QMainWindow):
         self.connect_unity_ui = Ui_ConnectUnityWindow()
         self.connect_unity_ui.setupUi(self.connect_unity_window)
         
+        self.connect_unity_window = QtWidgets.QWidget()
+        self.connect_unity_ui = Ui_ConnectUnityWindow()
+        self.connect_unity_ui.setupUi(self.connect_unity_window)
+        
         # ConnectUnityApp 추가: MplCanvas를 통해 그래프를 추가
         self.layout_widget = self.connect_unity_ui.Button_Connect.parent()
         self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=int(self.selected_angle))

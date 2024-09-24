@@ -31,7 +31,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Transfer Learning</string>
+    <string>3D View</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Button_back">
@@ -71,45 +71,6 @@
    </property>
    <property name="text">
     <string>Stop</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="List_pose">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>50</y>
-     <width>201</width>
-     <height>181</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="Label_explain">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>50</y>
-     <width>221</width>
-     <height>201</height>
-    </rect>
-   </property>
-   <property name="lineWidth">
-    <number>0</number>
-   </property>
-   <property name="text">
-    <string>좌측 리스트에 보이는 동작을
-동작마다 2초씩 5번 취해주세요.
-
-Start버튼을 누르시면 상세한 설명이 음성으로 안내 되오니
-안내 절차에 따라주십시오</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
    </property>
   </widget>
  </widget>
