@@ -33,46 +33,53 @@ class STEP50CNN:
         """
         return np.array(queue_data)
 
-    # 3. 실시간 예측 함수
     def predict_real_time_motion(self, processed_data):
         """
         전처리된 데이터를 이용해 실시간으로 모션 예측을 수행하는 함수.
-        model: 불러온 CNN 모델.
-        processed_data: 전처리된 시퀀스 데이터.
         """
+        if self.model is None:
+            print("모델이 로드되지 않았습니다.")
+            return None
+
         try:
             input_data = np.expand_dims(processed_data, axis=0)  # 배치 차원 추가
-            prediction = self.model.predict(input_data)
-            predicted_label = np.argmax(prediction, axis=1)  # 가장 높은 확률의 라벨 선택
-            return predicted_label[0]
+            prediction = self.model.predict(input_data)  # 모델로 예측 수행
+
+            # 예측 결과의 합 계산
+            prediction_sum = np.sum(prediction)
+
+            # 각 예측 값을 합으로 나눠 비율로 변환
+            ratio_output = np.round((prediction / prediction_sum) * 100, 2)
+
+            return ratio_output
         except Exception as e:
             print(f"실시간 예측 중 오류 발생: {e}")
             return None
 
     # 4. 실시간 데이터 추가 및 예측 수행 함수
-    def run(self):
+    def predict(self,new_data):
         """
         실시간으로 데이터를 추가하고, 큐가 50개의 시퀀스로 가득 차면 모션 예측을 수행하는 메인 함수.
         """
-        while True:
-            # 실시간으로 새로운 데이터 입력 (1x270 크기의 데이터가 계속 들어옴)
-            new_data = np.random.rand(270)  # 새로운 데이터 (1, 270)
+        # 큐에 새로운 데이터 추가
+        self.sequence_queue.append(new_data)
+        
 
-            # 큐에 새로운 데이터 추가
-            self.sequence_queue.append(new_data)
-
-            # 큐가 50개의 시퀀스로 가득 찼을 때만 예측 진행
-            if len(self.sequence_queue) == 50:
-                processed_data = self.preprocess_real_time_data(self.sequence_queue)
-                predicted_label = self.predict_real_time_motion(processed_data)
-
-                if predicted_label is not None:
-                    print(f"예측된 모션 라벨: {predicted_label}")
-                else:
-                    print("예측 실패.")
+        # 큐가 50개의 시퀀스로 가득 찼을 때만 예측 진행
+        if len(self.sequence_queue) == 50:
+            processed_data = self.preprocess_real_time_data(self.sequence_queue)
+            predicted_output = self.predict_real_time_motion(processed_data)
+            #predicted_label
+            return predicted_output
+        else:
+            return [[0.998,0,0, 0,0,0, 0,0,0,0.001]]
+            #if predicted_label is not None:
+            #    print(f"예측된 모션 라벨: {predicted_label}")
+            #else:
+            #    print("예측 실패.")
             
-            # 다음 입력을 위한 딜레이 (0.05초)
-            time.sleep(0.05)
+            
+            
 
 if __name__ == "__main__":
     # 모델 경로 설정
@@ -82,6 +89,6 @@ if __name__ == "__main__":
     step50_cnn = STEP50CNN(model_path)
 
     if step50_cnn.model is not None:
-        step50_cnn.run()
+        step50_cnn.predict(new_data)
     else:
         print("모델을 불러오지 못해 프로그램을 종료합니다.")

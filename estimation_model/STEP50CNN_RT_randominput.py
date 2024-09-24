@@ -1,6 +1,7 @@
 import numpy as np
 from collections import deque
 from tensorflow.keras.models import load_model
+from tensorflow.keras.activations import softmax
 import time
 
 class STEP50CNN:
@@ -42,29 +43,40 @@ class STEP50CNN:
         """
         try:
             input_data = np.expand_dims(processed_data, axis=0)  # 배치 차원 추가
-            prediction = self.model.predict(input_data)
-            predicted_label = np.argmax(prediction, axis=1)  # 가장 높은 확률의 라벨 선택
-            return predicted_label[0]
+            prediction = self.model.predict(input_data)  # 모델로 예측 수행
+            
+                # 예측 결과의 합 계산
+            prediction_sum = np.sum(prediction)
+
+            # 각 예측 값을 합으로 나눠 비율로 변환
+            prediction_sum = np.round((prediction / prediction_sum), 3)
+
+            # numpy 설정 변경하여 과학적 표기법 비활성화
+            np.set_printoptions(suppress=True)
+            return prediction_sum
         except Exception as e:
             print(f"실시간 예측 중 오류 발생: {e}")
             return None
 
     # 4. 실시간 데이터 추가 및 예측 수행 함수
-    def run(self,new_data):
+    def run(self):
         """
         실시간으로 데이터를 추가하고, 큐가 50개의 시퀀스로 가득 차면 모션 예측을 수행하는 메인 함수.
         """
         while True:
+            # 실시간으로 새로운 데이터 입력 (1x270 크기의 데이터가 계속 들어옴)
+            new_data = np.random.rand(270)  # 새로운 데이터 (1, 270)
+
             # 큐에 새로운 데이터 추가
             self.sequence_queue.append(new_data)
 
             # 큐가 50개의 시퀀스로 가득 찼을 때만 예측 진행
             if len(self.sequence_queue) == 50:
                 processed_data = self.preprocess_real_time_data(self.sequence_queue)
-                predicted_label = self.predict_real_time_motion(processed_data)
+                predicted_output = self.predict_real_time_motion(processed_data)
 
-                if predicted_label is not None:
-                    print(f"예측된 모션 라벨: {predicted_label}")
+                if predicted_output is not None:
+                    print(f"예측된 모션 로짓: {predicted_output}")
                 else:
                     print("예측 실패.")
             

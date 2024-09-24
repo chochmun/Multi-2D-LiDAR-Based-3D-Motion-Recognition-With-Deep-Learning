@@ -78,7 +78,7 @@ class MainApp(QtWidgets.QMainWindow):
         
         # ConnectUnityApp 추가: MplCanvas를 통해 그래프를 추가
         self.layout_widget = self.connect_unity_ui.Button_Connect.parent()
-        self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=self.selected_angle)
+        self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=int(self.selected_angle))
         self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
         #self.connect_unity_app = ConnectUnityApp()
 
@@ -152,7 +152,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.setting_ui.List_env.addItems(env_files)
 
     def load_model_files(self):
-        model_files_path = "lidar_interface/model_files"
+        model_files_path = self.folder_name_qt+"models"
         self.setting_ui.List_model.clear()
         if os.path.exists(model_files_path):
             model_files = os.listdir(model_files_path)
@@ -242,7 +242,7 @@ class MainApp(QtWidgets.QMainWindow):
 
         try:
             self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
-            self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=self.selected_angle)
+            self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=int(self.selected_angle))
             self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
         except FileNotFoundError as e:
             message="path is wrong"
@@ -385,16 +385,21 @@ class MainApp(QtWidgets.QMainWindow):
         self.multi_lidar_services.multi_lidar_driver.start_lidars()
         
         while self.is_running:
-            #data_strings=self.multi_lidar_services.view_datas()
-            start_time=round(time.time(),5)
-            idx_best_motion1,idx_best_motion2=self.mplcanvas.update_plot_scenario()
-            print(time.time()-start_time)
+            filtered_data1=self.multi_lidar_services.return_filtered_data()
+            filtered_data1= [item for sublist in filtered_data1 for item in sublist]
+            #filtered_data2=self.multi_lidar_services.return_filtered_data()
+            #start_time=round(time.time(),5)
+            #idx_best_motion1,idx_best_motion2=self.mplcanvas.update_plot_scenario()
+            #print(time.time()-start_time)
             #print(idx_best_motion1)
 
             #실시간 모션추론
-            motion_accuracies=self.multi_lidar_services.get_motion_by_NN()
-            idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot(motion_accuracies)
-            self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
+            print(filtered_data1)
+            motion_accuracies1=self.multi_lidar_services.get_motion_by_CNN(filtered_data1)
+            #motion_accuracies2=self.multi_lidar_services.get_motion_by_CNN(filtered_data2)
+            idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1,None)
+            print(idx_best_motion1)
+            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
             
             
             QApplication.processEvents()
@@ -618,7 +623,7 @@ class MainApp(QtWidgets.QMainWindow):
     def connect_lidars_with_usb(self):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
-            self.multi_lidar_services = MultiLidarServices()
+            self.multi_lidar_services = MultiLidarServices(model_path=self.folder_name_qt+'models\\'+ self.selected_model)
             
             #프로그램 시작시 settings 디폴트값으로 초기화
             tmp=self.multi_lidar_services.multi_lidar_driver.detect_lidar_ports()
@@ -634,7 +639,7 @@ class MainApp(QtWidgets.QMainWindow):
     def connect_lidars_with_wifi(self):
         # 멀티라이다 서비스 객체 생성 및 오류처리
         try:
-            self.multi_lidar_services = MultiLidarServices()
+            self.multi_lidar_services = MultiLidarServices(model_path=self.selected_model)
             self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
 
             self.set_buttons_by_connection()

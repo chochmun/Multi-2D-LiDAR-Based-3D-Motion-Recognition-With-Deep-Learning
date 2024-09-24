@@ -15,7 +15,7 @@ class MplCanvas(FigureCanvas):
         if self.angle>91: 
             self.axes1 = fig.add_subplot(121)  # 첫 번째 서브플롯 (좌)
             self.axes2 = fig.add_subplot(122)  # 두 번째 서브플롯 (우)
-        else:
+        elif angle==90:
             self.axes1 = fig.add_subplot(111)  # 첫 번째 서브플롯 (좌)
 
         super(MplCanvas, self).__init__(fig)
@@ -108,6 +108,36 @@ class MplCanvas(FigureCanvas):
             for i, bar in enumerate(self.bar2):
                 bar.set_width(values2[i])
                 if values2[i] == max_val2:
+                    idx_max_val2=i
+                    bar.set_color('#0EB2F1')
+                else:
+                    bar.set_color('#17FD79')
+
+        # 시나리오 인덱스를 다음으로 넘어감
+        self.scenario_index = (self.scenario_index + 1) % len(self.scenario)
+
+        self.draw()  # 그래프 다시 그리기
+        return [idx_max_val1,idx_max_val2]
+    
+    def update_plot_by_realtime_motion(self,data1,data2):
+        
+        max_val1 = np.max(data1)
+        for i, bar in enumerate(self.bar1):
+            bar.set_width(data1[i])
+            if data1[i] == max_val1:
+                idx_max_val1=i
+                bar.set_color('#0EB2F1')
+            else:
+                bar.set_color('#17FD79')
+
+        # 두 번째 서브플롯 업데이트 (필요 시)
+        idx_max_val2=None
+        if self.angle > 91:
+
+            max_val2 = np.max(data2)
+            for i, bar in enumerate(self.bar2):
+                bar.set_width(data2[i])
+                if data2[i] == max_val2:
                     idx_max_val2=i
                     bar.set_color('#0EB2F1')
                 else:

@@ -4,11 +4,13 @@ import os
 import time
 import numpy as np
 from PyQt5.QtWidgets import QApplication
+from . import ai_model_realtime
 
 
 class MultiLidarServices:
-    def __init__(self):
+    def __init__(self,model_path):
         self.multi_lidar_driver=multi_lidar_driver.MultiLidardriver(angle=90, max_distance=2000,ports_choice=[1, 2, 3],FPS=20)
+        self.model=ai_model_realtime.STEP50CNN(model_path=model_path)
         self.use_filter=True
         self.env_max_distances=3*[90*[0]] #json으로부터 불러와야할 거
         self.env_name="QT\env_jsons\hi.json" #일단 디폴트값
@@ -209,6 +211,11 @@ class MultiLidarServices:
             points.append({'x': x, 'y': y, 'z': z})
         
         return points
+            
+    def get_motion_by_CNN(self,data):
+        result = self.model.predict(data)
+        print(result[0])
+        return result[0]
     
     def plot_3d_points(self, points):
         fig = plt.figure()

@@ -3,7 +3,7 @@
     "buzz_duration": 3,
     "selected_angle": 90,
     "selected_env": "default.json",
-    "selected_model": "selected model file",
+    "selected_model": "motion_cnn_3_1to0_9.h5",
     "ports_choice": [
         1,
         2,
