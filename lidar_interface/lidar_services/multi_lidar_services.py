@@ -30,6 +30,7 @@ class MultiLidarServices:
             
     def get_detected_point(self):
         filtered_data=self.return_filtered_data()
+        print(filtered_data)
         all_summaries =self.process_and_summarize_all(filtered_data)
         return self.calculate_points(all_summaries)
 

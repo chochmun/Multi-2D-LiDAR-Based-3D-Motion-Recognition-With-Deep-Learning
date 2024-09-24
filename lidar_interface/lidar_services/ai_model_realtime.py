@@ -46,12 +46,12 @@ class STEP50CNN:
             prediction = self.model.predict(input_data)  # 모델로 예측 수행
 
             # 예측 결과의 합 계산
-            prediction_sum = np.sum(prediction)
+            #prediction_sum = np.sum(prediction)
 
             # 각 예측 값을 합으로 나눠 비율로 변환
-            ratio_output = np.round((prediction / prediction_sum) * 100, 2)
+            #ratio_output = np.round((prediction / prediction_sum) * 100, 2)
 
-            return ratio_output
+            return prediction
         except Exception as e:
             print(f"실시간 예측 중 오류 발생: {e}")
             return None

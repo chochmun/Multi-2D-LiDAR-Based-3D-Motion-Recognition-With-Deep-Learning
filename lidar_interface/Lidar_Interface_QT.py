@@ -272,6 +272,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.selected_pose = self.save_csv_ui.FunLabel_selectedpose.text()
         print(f"CSV Settings: Frames={self.frames}, Name={self.name}, Pose={self.selected_pose}")
         self.save_settings_to_jsonfile()
+
     def start_new_env_save(self):
         self.start_buzzer(self.buzz_duration)
         #============================
@@ -337,7 +338,7 @@ class MainApp(QtWidgets.QMainWindow):
             QApplication.processEvents()
         self.stop_function()
 
-    
+    # ===========전이학습============
     def start_transfer_learn_function(self):
         
         self.update_button_states(starting=True)
@@ -600,6 +601,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.Button_dataview.clicked.connect(self.show_data_view_window)
         self.ui.Button_envset.clicked.connect(self.show_env_set_window)
         self.ui.Button_transferlearn.clicked.connect(self.show_transfer_learn_window)
+
         self.ui.Button_3dview.clicked.connect(self.show_skeleton_view_window)
         self.ui.Button_csvsave.clicked.connect(self.show_save_csv_window)
         self.ui.Button_unity.clicked.connect(self.show_connect_unity_window)
