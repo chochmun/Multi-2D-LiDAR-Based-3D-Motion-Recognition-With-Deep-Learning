@@ -79,8 +79,67 @@ class STEP50CNN:
             #    print("예측 실패.")
             
             
-            
 
+class STEP50LSTM:
+    def __init__(self, model_path, max_length=50):
+        """
+        STEP50LSTM 클래스 초기화 함수.
+        모델 경로를 받아 모델을 로드하고, 실시간 시퀀스를 저장할 큐를 초기화.
+        """
+        self.model = self.load_motion_model(model_path)
+        self.sequence_queue = deque(maxlen=max_length)  # 최대 50개의 시퀀스를 유지
+        self.max_length = max_length
+
+    def load_motion_model(self, model_path):
+        """
+        학습된 LSTM 모델을 불러오는 함수.
+        """
+        try:
+            model = load_model(model_path)
+            print(f"모델 {model_path} 로드 성공.")
+            return model
+        except Exception as e:
+            print(f"모델 로드 실패: {e}")
+            return None
+
+    def preprocess_real_time_data(self, queue_data):
+        """
+        실시간 큐 데이터를 모델에 입력할 수 있도록 전처리하는 함수.
+        queue_data: (max_length, n_features) 형식의 시퀀스 데이터.
+        """
+        # 이미 max_length 개의 시퀀스를 가지고 있으므로 바로 반환
+        return np.array(queue_data)
+
+    def predict_real_time_motion(self, processed_data):
+        """
+        전처리된 데이터를 이용해 실시간으로 모션 예측을 수행하는 함수.
+        """
+        if self.model is None:
+            print("모델이 로드되지 않았습니다.")
+            return None
+
+        try:
+            input_data = np.expand_dims(processed_data, axis=0)  # 배치 차원 추가
+            prediction = self.model.predict(input_data)  # 모델로 예측 수행
+            return prediction
+        except Exception as e: 
+            print(f"실시간 예측 중 오류 발생: {e}")
+            return None
+
+    def predict(self, new_data):
+        """
+        실시간 데이터를 추가하고, 큐가 가득 찼을 때 모션 예측을 수행하는 메인 함수.
+        """
+        # 실시간으로 새로운 데이터 입력 (1x270 크기의 데이터가 계속 들어옴)
+        self.sequence_queue.append(new_data)
+
+        # 큐가 50개의 시퀀스로 가득 찼을 때만 예측 진행
+        if len(self.sequence_queue) == self.max_length:
+            processed_data = self.preprocess_real_time_data(self.sequence_queue)
+            predicted_motion = self.predict_real_time_motion(processed_data)
+            return predicted_motion
+        else:
+            return [[0.998,0,0, 0,0,0, 0,0,0,0.001]]
 if __name__ == "__main__":
     # 모델 경로 설정
     model_path = 'estimation_model/motion_cnn_3_5to0_5.h5'

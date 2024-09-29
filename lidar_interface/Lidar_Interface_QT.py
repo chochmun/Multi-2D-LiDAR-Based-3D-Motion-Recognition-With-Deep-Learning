@@ -432,8 +432,8 @@ class MainApp(QtWidgets.QMainWindow):
             #print(idx_best_motion1)
 
             #실시간 모션추론
-            print(filtered_data1)
-            motion_accuracies1=self.multi_lidar_services.get_motion_by_CNN(filtered_data1)
+            #print(filtered_data1)
+            motion_accuracies1=self.multi_lidar_services.get_motion_by_AI(filtered_data1)
             #motion_accuracies2=self.multi_lidar_services.get_motion_by_CNN(filtered_data2)
             idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1,None)
             print(idx_best_motion1)

@@ -213,9 +213,10 @@ class MultiLidarServices:
         
         return points
             
-    def get_motion_by_CNN(self,data):
+    def get_motion_by_AI(self,data):
+        a=time.time()
         result = self.model.predict(data)
-        print(result[0])
+        print(time.time()-a)
         return result[0]
     
     def plot_3d_points(self, points):
