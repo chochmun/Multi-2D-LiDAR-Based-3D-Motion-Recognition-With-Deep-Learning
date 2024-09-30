@@ -94,10 +94,7 @@ class MainApp(QtWidgets.QMainWindow):
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
                     self.update_ui_from_settings()
-        self.setting_ui.Input_port_top.setText(str(self.ports_choice[0]))
-        print(f"+++++++++++++++++++++++++++++++++++++++++++++{self.ports_choice[0]}")
-        self.setting_ui.Input_port_mid.setText(str(self.ports_choice[1]))
-        self.setting_ui.Input_port_bot.setText(str(self.ports_choice[2]))
+        
         # 필드 변수 초기화
         self.usr_click_count=0 #동적데이터 저장시에 버튼클릭 세주는것
 
@@ -185,16 +182,16 @@ class MainApp(QtWidgets.QMainWindow):
     def load_key_mapping(self):
         return {
             #0: Stand motion -> None press
-            0: Key.up,#차렷자세 -> 전진
-            -1: Key.down, #(미구현) 
-            2: Key.left, #왼손 들기 -> 좌 이동
-            3: Key.right,#오른손 들기 -> 우 이동
-            8: Key.space, #점프  -> 점프ㅇ
-            4: 't',#만세 - 상호작용1
-            5: 'y',#스쿼트 -상호작용2
-            6: 'u',#플랭크 - 상호작용3 
-            7: 'p',#너무 가까움 -Pause
-            1:'p'#사람없음 -Pause
+            0: [Key.up,None],#차렷자세 -> 전진
+            -1: [Key.down,None], #(미구현) 
+            2: [Key.left,Key.up], #왼손 들기 -> 좌 이동
+            3: [Key.right,Key.up],#오른손 들기 -> 우 이동
+            8: [Key.space,Key.up], #점프  -> 점프ㅇ
+            4: ['t',None],#만세 - 상호작용1
+            5: ['y',None],#스쿼트 -상호작용2
+            6: ['u',None],#플랭크 - 상호작용3 
+            7: ['p',None],#너무 가까움 -Pause
+            1:['p',None]#사람없음 -Pause
         }, {
             #0: Stand motion -> None press
             1: 'w',   2: 'a',    3: 's', 4: 'd',
@@ -442,7 +439,6 @@ class MainApp(QtWidgets.QMainWindow):
             #idx_best_motion1,idx_best_motion2=self.mplcanvas.update_plot_scenario()
             #print(time.time()-start_time)
             #print(idx_best_motion1)
-
             #실시간 모션추론
             #print(filtered_data1)
             motion_accuracies1=self.multi_lidar_services.get_motion_by_AI(filtered_data1)
@@ -450,8 +446,8 @@ class MainApp(QtWidgets.QMainWindow):
             print(motion_accuracies1)
             idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1,None)
             print(idx_best_motion1)
-            self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
-            
+            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1,keydown_time=1,wait_time=0)
+            threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1,0.05)).start()
             
             QApplication.processEvents()
         self.stop_function()
@@ -752,18 +748,18 @@ class MainApp(QtWidgets.QMainWindow):
         ax.set_zlabel('Z axis')
 
         plt.pause(0.01)  # 플롯 갱신 대기 시간 (0.1초)
-    def press_keyboard(self,idx_best_motion, player_keys):
+    def press_keyboard(self,idx_best_motion, player_keys,keydown_time=0.05,wait_time=0):
 
             if idx_best_motion in player_keys:
                 key = player_keys[idx_best_motion]
                 print(key)
                 if isinstance(key, str):  # 문자열로 주어진 키는 직접 char로 처리
                     self.keyboard.press(key)
-                    time.sleep(0.2)  # 각 키 입력 동작 간 n초 대기
+                    time.sleep(keydown_time)  # 각 키 입력 동작 간 n초 대기
                     self.keyboard.release(key)
                 else:  # pynput의 Key 값으로 처리되는 경우
                     self.keyboard.press(key)
-                    time.sleep(0.2)  # 각 키 입력 동작 간 n초 대기
+                    time.sleep(keydown_time)  # 각 키 입력 동작 간 n초 대기
                     self.keyboard.release(key)
 class WorkerThread(threading.Thread):
     def __init__(self):
