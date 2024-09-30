@@ -199,6 +199,9 @@ class MainApp(QtWidgets.QMainWindow):
             6: 't',7: 'y',8: 'u',  
             9: 'p'    
         }
+        
+        # Return the loaded key mappings
+        return key_mappings["player1"], key_mappings["player2"]
 
     def select_env(self, item):
         self.setting_ui.FuncLabel_selected_env.setText(item.text())
@@ -742,25 +745,44 @@ class MainApp(QtWidgets.QMainWindow):
         ax.set_xlim([-500, 500])
         ax.set_ylim([0, 1500])
         ax.set_zlim([0, 2000])
-
         ax.set_xlabel('X axis')
         ax.set_ylabel('Y axis')
         ax.set_zlabel('Z axis')
 
         plt.pause(0.01)  # 플롯 갱신 대기 시간 (0.1초)
-    def press_keyboard(self,idx_best_motion, player_keys,keydown_time=0.05,wait_time=0):
+    def press_keyboard(self, idx_best_motion, player_keys, keydown_time=0.05):
+        keys=[None,None]
+        if idx_best_motion in player_keys:
+            keys = player_keys[idx_best_motion]
+        key_first,key_second=keys[0],keys[1]
+        print("dddddddddddfsdfasdf",key_first,key_second)
+        def press_and_release_key(key):
+            if key is None:
+                return  # None일 경우 아무 동작도 하지 않음
+            elif isinstance(key, str):
+                self.keyboard.press(key)
+                time.sleep(keydown_time)
+                self.keyboard.release(key)
+            else:
+                self.keyboard.press(key)
+                time.sleep(keydown_time)
+                self.keyboard.release(key)
+         # 두 키가 모두 유효할 때 동시에 입력 처리
+        if key_first and key_second:
+            self.keyboard.press(key_first)
+            self.keyboard.press(key_second)
+            time.sleep(keydown_time)
+            self.keyboard.release(key_first)
+            self.keyboard.release(key_second)
+        
+        # 첫 번째 키만 유효할 때
+        elif key_first:
+            press_and_release_key(key_first)
+        
+        # 두 번째 키만 유효할 때
+        elif key_second:
+            press_and_release_key(key_second)
 
-            if idx_best_motion in player_keys:
-                key = player_keys[idx_best_motion]
-                print(key)
-                if isinstance(key, str):  # 문자열로 주어진 키는 직접 char로 처리
-                    self.keyboard.press(key)
-                    time.sleep(keydown_time)  # 각 키 입력 동작 간 n초 대기
-                    self.keyboard.release(key)
-                else:  # pynput의 Key 값으로 처리되는 경우
-                    self.keyboard.press(key)
-                    time.sleep(keydown_time)  # 각 키 입력 동작 간 n초 대기
-                    self.keyboard.release(key)
 class WorkerThread(threading.Thread):
     def __init__(self):
         super().__init__()

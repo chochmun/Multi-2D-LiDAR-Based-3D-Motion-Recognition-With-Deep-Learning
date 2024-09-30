@@ -12,7 +12,7 @@
     "frames": 5,
     "name": "mun_test",
     "selected_pose": "0",
-    "new_env_name": "defau.json",
+    "new_env_name": "defau",
     "new_env_loading_time": 7,
     "new_env_margin_dist": 60
 }
