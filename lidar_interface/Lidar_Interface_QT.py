@@ -257,9 +257,11 @@ class MainApp(QtWidgets.QMainWindow):
         self.data_view_ui.FuncLabel_angle.setText(str(self.selected_angle))
 
         try:
-            self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+            if self.multi_lidar_services is not None:
+                self.multi_lidar_services.reset_multi_lidar(new_maxdist=self.max_dist,new_angle=self.selected_angle,new_ports_choice=self.ports_choice, env_path=self.envpath,new_selected_env=self.selected_env)
+            
             self.mplcanvas = MplCanvas(self.layout_widget, width=5, height=4, dpi=100,angle=int(self.selected_angle))
-            self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
+            #self.connect_unity_ui.verticalLayout.addWidget(self.mplcanvas)
         except FileNotFoundError as e:
             message="path is wrong"
             self.show_error_message(message)

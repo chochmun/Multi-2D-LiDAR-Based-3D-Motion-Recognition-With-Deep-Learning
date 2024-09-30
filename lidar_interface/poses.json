@@ -1,13 +1,12 @@
 {
     "0": "stand",
-    "1": "walk",
-    "2": "walk_left_handsup",
-    "3": "walk_right_handsup",
+    "1": "none",
+    "2": "left_hand",
+    "3": "right_hand",
     "4": "wave",
-    "5": "run",
-    "6": "jump",
-    "7": "squat",
-    "8": "left_hands_updown",
-    "9": "right_hands_updown",
-    "10": "none"
+    "5": "squat",
+    "6": "plank",
+    "7": "too_close",
+    "8": "jump",
+    "9": "walk"
 }

@@ -1,18 +1,18 @@
 {
     "max_dist": 2000,
-    "buzz_duration": 3,
+    "buzz_duration": 5,
     "selected_angle": 90,
-    "selected_env": "default.json",
+    "selected_env": "defallt.json",
     "selected_model": "motion_cnn_3_5to0_5.h5",
     "ports_choice": [
         1,
         2,
         3
     ],
-    "frames": 500,
-    "name": "default",
-    "selected_pose": "0",
-    "new_env_name": "default",
+    "frames": 200,
+    "name": "mun",
+    "selected_pose": "5: squat",
+    "new_env_name": "defallt.json",
     "new_env_loading_time": 7,
-    "new_env_margin_dist": 40
+    "new_env_margin_dist": 60
 }
