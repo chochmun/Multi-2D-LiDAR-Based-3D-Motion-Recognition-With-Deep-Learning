@@ -2,17 +2,17 @@
     "max_dist": 2000,
     "buzz_duration": 3,
     "selected_angle": 90,
-    "selected_env": "def2.json",
-    "selected_model": "motion_cnn_3_5to0_5.h5",
+    "selected_env": "defau.json",
+    "selected_model": "motion_cnn_transfrom_static_mun.h5",
     "ports_choice": [
         3,
         1,
         2
     ],
-    "frames": 100,
-    "name": "mun",
-    "selected_pose": "7: too_close",
-    "new_env_name": "def2.json",
+    "frames": 5,
+    "name": "mun_test",
+    "selected_pose": "0",
+    "new_env_name": "defau.json",
     "new_env_loading_time": 7,
     "new_env_margin_dist": 60
 }

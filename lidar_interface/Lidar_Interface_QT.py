@@ -46,7 +46,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.default_initialization()
         
         self.multi_lidar_services=None
-        self.ports_choice=[1,2,3]
+        
         self.envpath=self.folder_name_qt+"env_jsons"
         self.key_mapping_play1,self.key_mapping_play2=self.load_key_mapping()
         
@@ -94,7 +94,10 @@ class MainApp(QtWidgets.QMainWindow):
         #위에서 객체생성한 후에 ,불러온세팅값으로 업데이트
         if self.settings_loaded:
                     self.update_ui_from_settings()
-
+        self.setting_ui.Input_port_top.setText(str(self.ports_choice[0]))
+        print(f"+++++++++++++++++++++++++++++++++++++++++++++{self.ports_choice[0]}")
+        self.setting_ui.Input_port_mid.setText(str(self.ports_choice[1]))
+        self.setting_ui.Input_port_bot.setText(str(self.ports_choice[2]))
         # 필드 변수 초기화
         self.usr_click_count=0 #동적데이터 저장시에 버튼클릭 세주는것
 
@@ -116,7 +119,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ports_choice[0] = int(self.setting_ui.Input_port_top.text())
         self.ports_choice[1] = int(self.setting_ui.Input_port_mid.text())
         self.ports_choice[2] = int(self.setting_ui.Input_port_bot.text())
-        print(f"Settings default2: MaxDist={self.max_dist}, BuzzDuration={self.buzz_duration}, Angle={self.selected_angle}, Env={self.selected_env}, Model={self.selected_model}")
+        print(f"Settings default2: MaxDist={self.max_dist}, BuzzDuration={self.buzz_duration}, Angle={self.selected_angle}, Env={self.selected_env}, Model={self.selected_model}, ports={self.ports_choice}")
 
         #Environment set 필드 초기화
         self.new_env_name=self.env_set_ui.Input_json.text()
@@ -178,13 +181,20 @@ class MainApp(QtWidgets.QMainWindow):
                 for key, value in poses.items():
                     display_text = f"{key}: {value}"
                     self.save_csv_ui.List_pose.addItem(display_text)
+
     def load_key_mapping(self):
         return {
             #0: Stand motion -> None press
-            1: Key.up,2: Key.down,3: Key.left,4: Key.right,
-            5: Key.space,  
-            6: 't',7: 'y',8: 'u',
-            9: 'p'
+            0: Key.up,#차렷자세 -> 전진
+            -1: Key.down, #(미구현) 
+            2: Key.left, #왼손 들기 -> 좌 이동
+            3: Key.right,#오른손 들기 -> 우 이동
+            8: Key.space, #점프  -> 점프ㅇ
+            4: 't',#만세 - 상호작용1
+            5: 'y',#스쿼트 -상호작용2
+            6: 'u',#플랭크 - 상호작용3 
+            7: 'p',#너무 가까움 -Pause
+            1:'p'#사람없음 -Pause
         }, {
             #0: Stand motion -> None press
             1: 'w',   2: 'a',    3: 's', 4: 'd',
@@ -437,9 +447,10 @@ class MainApp(QtWidgets.QMainWindow):
             #print(filtered_data1)
             motion_accuracies1=self.multi_lidar_services.get_motion_by_AI(filtered_data1)
             #motion_accuracies2=self.multi_lidar_services.get_motion_by_CNN(filtered_data2)
+            print(motion_accuracies1)
             idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1,None)
             print(idx_best_motion1)
-            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
+            self.press_keyboard(idx_best_motion1,self.key_mapping_play1)
             
             
             QApplication.processEvents()
@@ -547,6 +558,8 @@ class MainApp(QtWidgets.QMainWindow):
                 self.selected_env = settings.get("selected_env", "")
                 self.selected_model = settings.get("selected_model", "")
                 self.ports_choice = settings.get("ports_choice", [1, 2, 3])
+                
+                
                 self.frames = settings.get("frames", 100)
                 self.name = settings.get("name", "")
                 self.selected_pose = settings.get("selected_pose", "")
@@ -554,6 +567,7 @@ class MainApp(QtWidgets.QMainWindow):
                 self.new_env_loading_time = settings.get("new_env_loading_time", 10)
                 self.new_env_margin_dist = settings.get("new_env_margin_dist", 50)
             print("Settings loaded from file.")
+            
         else:
             print("No settings file found. Using default values.")
     def default_initialization(self):
@@ -770,6 +784,11 @@ class WorkerThread(threading.Thread):
             self._flag.clear()  # 작업이 끝나면 다시 대기 상태로 전환
 
     def process_data(self, path,data):
+        directory = os.path.dirname(path)
+    
+        # Create the directory if it doesn't exist
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         with open(path, 'a', newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(data)

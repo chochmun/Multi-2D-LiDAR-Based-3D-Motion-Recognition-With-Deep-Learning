@@ -284,7 +284,7 @@ if __name__=="__main__":
     #rnn_model = CNNModel(input_shape=(X_train.shape[1],),output_shape=9 ,device=device, model_name='motion_cnn_static_jcm.h5')
 
     # 모델 학습
-    rnn_model.train_and_evaluate_model(X_train, y_train, epochs=100,batch_size=128, model_name='motion_cnn_static_jcm.h5')
+    rnn_model.train_and_evaluate_model(X_train, y_train, epochs=300,batch_size=128, model_name='motion_cnn_static_jcm.h5')
 
     # 모델을 사용해 최종 예측 및 평가
     rnn_model.predict_and_evaluate(X_train, y_train, model_path='motion_cnn_static_jcm.h5', label_mapping=label_mapping)

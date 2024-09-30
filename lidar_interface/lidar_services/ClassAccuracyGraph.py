@@ -11,7 +11,7 @@ class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=7, height=2.5, dpi=100,angle=90):  # 크기를 700x250으로 설정 (inch로 설정: 7x2.5)
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.angle=angle
-
+        self.class_num=10
         if self.angle>91: 
             self.axes1 = fig.add_subplot(121)  # 첫 번째 서브플롯 (좌)
             self.axes2 = fig.add_subplot(122)  # 두 번째 서브플롯 (우)
@@ -38,17 +38,17 @@ class MplCanvas(FigureCanvas):
         }
 
     def init_plot(self,angle):
-        labels = ['stand', 'walk', 'walk_L', 'walk_R', 'wave', 'jump', 'squat', 'action_L', 'action_R', 'none']  # Y축 레이블 설정
-        
+        labels = ["stand", "none", "left_hand", "right_hand", "wave", "squat", "plank", "too_close", "jump", "walk"]
+
         # 첫 번째 서브플롯 초기화
-        self.bar1 = self.axes1.barh(np.arange(10), np.zeros(10), color='#17FD79', height=0.8)
+        self.bar1 = self.axes1.barh(np.arange(9), np.zeros(9), color='#17FD79', height=0.8)
         self.axes1.set_xlim(0, 1)
         self.axes1.set_yticks(np.arange(10))
         self.axes1.set_yticklabels(labels)  # Y축 레이블을 'a' ~ 'j'로 설정
         self.axes1.set_xticks(np.arange(0, 1.1, 0.2))  # X축 눈금 0.1 단위로 설정
         if self.angle>91:
             # 두 번째 서브플롯 초기화
-            self.bar2 = self.axes2.barh(np.arange(10), np.zeros(10), color='#17FD79', height=0.8)
+            self.bar2 = self.axes2.barh(np.arange(9), np.zeros(9), color='#17FD79', height=0.8)
             self.axes2.set_xlim(0, 1)
             self.axes2.set_yticks(np.arange(10))
             self.axes2.set_yticklabels(labels)  # Y축 레이블을 'a' ~ 'j'로 설정
