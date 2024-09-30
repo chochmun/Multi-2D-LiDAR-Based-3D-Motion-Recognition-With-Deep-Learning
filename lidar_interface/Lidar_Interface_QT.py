@@ -379,7 +379,7 @@ class MainApp(QtWidgets.QMainWindow):
 
             
             pose_label_num, pose_label = self.selected_pose.split(": ")
-            csv_path = f'csv_files/{pose_label}_lidar_data{datetime.now().strftime("%m_%d_%H-%M-%S")}.csv'
+            csv_path = f'csv_files/{self.name}/{pose_label}_lidar_data{datetime.now().strftime("%m_%d_%H-%M-%S")}.csv'
             print(csv_path)
 
             self.multi_lidar_services.multi_lidar_driver.start_lidars()
