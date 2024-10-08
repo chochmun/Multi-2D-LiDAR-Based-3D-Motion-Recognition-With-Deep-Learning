@@ -2,7 +2,7 @@
     "max_dist": 2000,
     "buzz_duration": 3,
     "selected_angle": 90,
-    "selected_env": "defau.json",
+    "selected_env": "default.json",
     "selected_model": "motion_cnn_transfrom_static_mun.h5",
     "ports_choice": [
         3,
@@ -12,7 +12,7 @@
     "frames": 5,
     "name": "mun_test",
     "selected_pose": "0",
-    "new_env_name": "defau",
+    "new_env_name": "default.json",
     "new_env_loading_time": 7,
     "new_env_margin_dist": 60
 }

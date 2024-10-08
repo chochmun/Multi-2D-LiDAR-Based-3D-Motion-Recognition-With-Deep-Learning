@@ -27,6 +27,7 @@ import csv
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from pynput.keyboard import Key, Controller
+from matplotlib.animation import FuncAnimation
 
 class MainApp(QtWidgets.QMainWindow):
     
@@ -427,28 +428,92 @@ class MainApp(QtWidgets.QMainWindow):
 
 
     def start_connect_unity_function(self):
-    #===========유니티 연동 함수=======#
+        #===========유니티 연동 함수=======#
         self.keyboard = Controller()
         self.update_button_states(starting=True)
         self.start_buzzer(self.buzz_duration)
         self.is_running = True
         self.multi_lidar_services.multi_lidar_driver.start_lidars()
+
+        delays = []  # List to store delays
+        times = []   # List to store elapsed times
+        motion_predictions = []  # List to store idx_best_motion1 predictions
+        start_time_total = time.time()
+
+        labels = ["stand", "none", "left_hand", "right_hand", "wave", "squat", "plank", "too_close", "jump", "walk"]
+
+        # Setup the matplotlib figure and axis for real-time plotting
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))  # Two subplots: one for delay, one for predictions
+
+        # Plot for delays (subplot 1)
+        ax1.set_title('Real-Time Delay Plot')
+        ax1.set_xlabel('Elapsed Time (s)')
+        ax1.set_ylabel('Delay (s)')
+        line1, = ax1.plot([], [], lw=2)
+        ax1.set_xlim(0, 10)  # Adjust the x-axis limits based on expected duration
+        ax1.set_ylim(0, 0.025)  # Adjust the y-axis limits based on expected delays
         
+        # Scatter plot for motion predictions (subplot 2)
+        ax2.set_title('Real-Time Motion Predictions (idx_best_motion1)')
+        ax2.set_xlabel('Elapsed Time (s)')
+        ax2.set_ylabel('Prediction')
+        scatter = ax2.scatter([], [], color='orange')
+        ax2.set_xlim(0, 10)  # Adjust the x-axis limits for prediction timeline
+        ax2.set_ylim(-1, 10)  # Adjust the y-axis based on possible motion prediction values
+
+        def update_plot(i):
+            # Update the delay line with new data
+            line1.set_data(times, delays)
+            # Update the scatter plot with new data
+            if times and motion_predictions:  # Check if there's data to plot
+                scatter.set_offsets(np.array(list(zip(times, motion_predictions))))  # Ensure it's a 2D array
+
+            return line1, scatter,
+
+        ani = FuncAnimation(fig, update_plot, blit=True, interval=100)  # Update the plot every 100 ms
+        plt.ion()  # Enable interactive mode
+        plt.tight_layout()  # Ensure subplots fit neatly
+        plt.show()
+
         while self.is_running:
-            filtered_data1=self.multi_lidar_services.return_filtered_data()
-            filtered_data1= [item for sublist in filtered_data1 for item in sublist]
-            
-            start_time=round(time.time(),5)
-            motion_accuracies1=self.multi_lidar_services.get_motion_by_AI(filtered_data1)
-            #motion_accuracies2=self.multi_lidar_services.get_motion_by_AI(filtered_data2)
-            print(time.time()-start_time)
-            
-            idx_best_motion1,idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1,None)
-            #self.press_keyboard(idx_best_motion1,self.key_mapping_play1,keydown_time=1,wait_time=0)
-            threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1,0.05)).start()
-            
+            filtered_data1 = self.multi_lidar_services.return_filtered_data()
+            filtered_data1 = [item for sublist in filtered_data1 for item in sublist]
+
+            # Measure delay for motion prediction
+            loop_start_time = time.time()
+            motion_accuracies1 = self.multi_lidar_services.get_motion_by_AI(filtered_data1)
+            delay = round(time.time() - loop_start_time, 5)
+            elapsed_time = round(time.time() - start_time_total, 5)
+
+            # Get idx_best_motion1 prediction
+            idx_best_motion1, idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1, None)
+
+            # Append the delay, elapsed time, and motion prediction to the lists
+            delays.append(delay)
+            times.append(elapsed_time)
+            motion_predictions.append(idx_best_motion1)  # Store the prediction for plotting
+
+            # Adjust x and y axis limits dynamically
+            ax1.set_xlim(0, elapsed_time + 1)
+            ax2.set_xlim(0, elapsed_time + 1)
+
+            if delay > ax1.get_ylim()[1]:
+                ax1.set_ylim(0, delay + 0.01)
+
+            if idx_best_motion1 > ax2.get_ylim()[1]:
+                ax2.set_ylim(-1, idx_best_motion1 + 1)
+
+            # Update the plot's y-axis labels to show human-readable motions
+            ax2.set_yticks(range(len(labels)))
+            ax2.set_yticklabels(labels)
+
+            # Start the threading for keyboard press
+            threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1, 0.05)).start()
+
             QApplication.processEvents()
+
         self.stop_function()
+
         
     #============================라이다 구동함수 끝================================================================================
     def start_buzzer(self, duration):
