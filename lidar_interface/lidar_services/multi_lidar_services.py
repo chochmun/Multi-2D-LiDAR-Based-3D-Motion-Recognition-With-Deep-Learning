@@ -214,9 +214,9 @@ class MultiLidarServices:
         return points
             
     def get_motion_by_AI(self,data):
-        a=time.time()
+       
         result = self.model.predict(data)
-        print(time.time()-a)
+        
         return result[0]
     
     def plot_3d_points(self, points):

@@ -118,7 +118,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Lidar Interface"))
         self.Button_dataview.setText(_translate("MainWindow", "Multi-Lidar Data View"))
         self.Button_setting.setText(_translate("MainWindow", "Settings"))
         self.Button_envset.setText(_translate("MainWindow", "Environment Set"))

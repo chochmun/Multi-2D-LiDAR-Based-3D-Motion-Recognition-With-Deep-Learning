@@ -3,16 +3,16 @@
     "buzz_duration": 3,
     "selected_angle": 90,
     "selected_env": "default.json",
-    "selected_model": "motion_cnn_transfrom_static_mun.h5",
+    "selected_model": "CNN_4mb.h5",
     "ports_choice": [
-        3,
+        2,
         1,
-        2
+        3
     ],
-    "frames": 5,
-    "name": "mun_test",
+    "frames": 300,
+    "name": "mun",
     "selected_pose": "0",
-    "new_env_name": "default.json",
+    "new_env_name": "defaul",
     "new_env_loading_time": 7,
-    "new_env_margin_dist": 60
+    "new_env_margin_dist": 40
 }
