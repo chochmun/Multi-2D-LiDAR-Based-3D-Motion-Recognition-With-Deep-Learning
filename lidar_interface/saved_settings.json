@@ -5,14 +5,14 @@
     "selected_env": "default.json",
     "selected_model": "CNN_4mb.h5",
     "ports_choice": [
-        2,
         1,
+        2,
         3
     ],
     "frames": 300,
-    "name": "mun",
+    "name": "jcm",
     "selected_pose": "0",
-    "new_env_name": "defaul",
+    "new_env_name": "default.json",
     "new_env_loading_time": 7,
     "new_env_margin_dist": 40
 }

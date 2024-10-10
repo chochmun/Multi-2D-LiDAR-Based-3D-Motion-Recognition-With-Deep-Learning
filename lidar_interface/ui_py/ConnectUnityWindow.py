@@ -16,7 +16,7 @@ class Ui_ConnectUnityWindow(object):
         ConnectUnityWindow.setObjectName("ConnectUnityWindow")
         ConnectUnityWindow.resize(758, 375)
         self.label_title = QtWidgets.QLabel(ConnectUnityWindow)
-        self.label_title.setGeometry(QtCore.QRect(10, 10, 201, 16))
+        self.label_title.setGeometry(QtCore.QRect(10, 10, 281, 16))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -49,7 +49,7 @@ class Ui_ConnectUnityWindow(object):
     def retranslateUi(self, ConnectUnityWindow):
         _translate = QtCore.QCoreApplication.translate
         ConnectUnityWindow.setWindowTitle(_translate("ConnectUnityWindow", "ConnectUnityWindow"))
-        self.label_title.setText(_translate("ConnectUnityWindow", "Connect Unity"))
+        self.label_title.setText(_translate("ConnectUnityWindow", "Motion Estimation & Unity Connection"))
         self.Button_back.setText(_translate("ConnectUnityWindow", "Back"))
         self.Button_Connect.setText(_translate("ConnectUnityWindow", "Connect"))
         self.Button_start.setText(_translate("ConnectUnityWindow", "Start"))

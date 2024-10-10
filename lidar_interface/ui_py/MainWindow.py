@@ -121,14 +121,14 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Lidar Interface"))
         self.Button_dataview.setText(_translate("MainWindow", "Multi-Lidar Data View"))
         self.Button_setting.setText(_translate("MainWindow", "Settings"))
-        self.Button_envset.setText(_translate("MainWindow", "Environment Set"))
+        self.Button_envset.setText(_translate("MainWindow", "Create Filter"))
         self.Button_transferlearn.setText(_translate("MainWindow", "Transfer Learning"))
-        self.Button_csvsave.setText(_translate("MainWindow", "Save to CSV"))
+        self.Button_csvsave.setText(_translate("MainWindow", "Create DataSet"))
         self.label.setText(_translate("MainWindow", "View"))
         self.label_2.setText(_translate("MainWindow", "Utility"))
         self.Button_unity.setText(_translate("MainWindow", "Motion Estimation\n"
-"And Unity"))
-        self.Button_usbconnection.setText(_translate("MainWindow", "Lidar\n"
+"&& Unity"))
+        self.Button_usbconnection.setText(_translate("MainWindow", "USB\n"
 "Connection"))
         self.Button_wificonnection.setText(_translate("MainWindow", "Wi-Fi\n"
 "Connection"))

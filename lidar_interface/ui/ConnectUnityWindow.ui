@@ -18,7 +18,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>201</width>
+     <width>281</width>
      <height>16</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Connect Unity</string>
+    <string>Motion Estimation &amp; Unity Connection</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Button_back">

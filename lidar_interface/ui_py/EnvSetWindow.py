@@ -71,8 +71,8 @@ class Ui_EnvSetWindow(object):
 
     def retranslateUi(self, EnvSetWindow):
         _translate = QtCore.QCoreApplication.translate
-        EnvSetWindow.setWindowTitle(_translate("EnvSetWindow", "EnvSetWindow"))
-        self.Label_title.setText(_translate("EnvSetWindow", "Environment Set"))
+        EnvSetWindow.setWindowTitle(_translate("EnvSetWindow", "Create Filter Window"))
+        self.Label_title.setText(_translate("EnvSetWindow", "Create Filter"))
         self.Input_json.setText(_translate("EnvSetWindow", "default"))
         self.Button_back.setText(_translate("EnvSetWindow", "Back"))
         self.Label_json.setText(_translate("EnvSetWindow", "json file name : "))
@@ -81,12 +81,12 @@ class Ui_EnvSetWindow(object):
         self.Label_margindist.setText(_translate("EnvSetWindow", "Margin distance :"))
         self.Input_margindist.setText(_translate("EnvSetWindow", "0"))
         self.Button_adjust.setText(_translate("EnvSetWindow", "Adjust"))
-        self.Label_explain.setText(_translate("EnvSetWindow", "환경을 저장하는 동안 라이다모듈 근처에 최대한 장애물을 없게 하는 것이 권장됩니다.\n"
+        self.Label_explain.setText(_translate("EnvSetWindow", "환경을 저장하는 동안 라이다모듈 근처에 최대한 아무 것도 없게 하는 것이 권장됩니다.\n"
 "\n"
-"Loading Time은 환경정보를 읽어오는 시간이며, 적정 10초가 권장됩니다.\n"
+"Loading Time은 환경정보를 읽어오는 시간이며, 최소 5초가 권장됩니다.\n"
 "\n"
 "Margin_distance( 단위 : mm)은\n"
-"환경정보를 저장할때 조금더 여유를 줄 수 있는 거리를 의미합니다. 0~30mm가 권장됩니다."))
+"환경정보를 저장할때 조금 더 여유를 줄 수 있는 거리를 의미합니다. 30~50mm가 권장됩니다."))
         self.Button_save.setText(_translate("EnvSetWindow", "Start Save"))
         self.Label_saveformat.setText(_translate("EnvSetWindow", "Save format : <file_name>.json"))
 

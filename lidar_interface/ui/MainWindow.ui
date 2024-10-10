@@ -74,7 +74,7 @@
      <string notr="true">background-color: rgb(221, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Environment Set</string>
+     <string>Create Filter</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Button_transferlearn">
@@ -106,7 +106,7 @@
      <string notr="true">background-color: rgb(221, 236, 255);</string>
     </property>
     <property name="text">
-     <string>Save to CSV</string>
+     <string>Create DataSet</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -165,7 +165,7 @@
     </property>
     <property name="text">
      <string>Motion Estimation
-And Unity</string>
+&amp;&amp; Unity</string>
     </property>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
@@ -203,7 +203,7 @@ background-image: url(:/newPrefix/images/background.JPG);
      <string notr="true">background-color: rgb(213, 218, 227);</string>
     </property>
     <property name="text">
-     <string>Lidar
+     <string>USB
 Connection</string>
     </property>
     <property name="checkable">

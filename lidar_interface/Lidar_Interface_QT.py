@@ -98,7 +98,7 @@ class MainApp(QtWidgets.QMainWindow):
         
         # 필드 변수 초기화
         self.usr_click_count=0 #동적데이터 저장시에 버튼클릭 세주는것
-
+        self.key_input_approval = False #유니티 키입력 , Connection누르면 활성화되고 stop누르면 비활성화
         self.is_running = False  # 라이다 구동함수 실행여부
         self.elapsed_time = 0  # 경과 시간 저장
         self.timer_thread = None  # 타이머 스레드
@@ -430,6 +430,7 @@ class MainApp(QtWidgets.QMainWindow):
     def start_connect_unity_function(self):
             #===========유니티 연동 함수=======#
             self.keyboard = Controller()
+            self.connect_unity_ui.Button_Connect.setEnabled(True)
             self.update_button_states(starting=True)
             self.start_buzzer(self.buzz_duration)
             self.is_running = True
@@ -509,13 +510,15 @@ class MainApp(QtWidgets.QMainWindow):
                 ax2.set_yticklabels(labels)
 
                 # Start the threading for keyboard press
-                threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1, 0.05)).start()
+                if self.key_input_approval==True:
+                    threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1, 0.05)).start()
 
                 QApplication.processEvents()
 
             self.stop_function()
+    def start_key_input_function(self):
+        self.key_input_approval=True
 
-        
     #============================라이다 구동함수 끝================================================================================
     def start_buzzer(self, duration):
         print(f"Buzzing for {duration} seconds...")
@@ -563,6 +566,7 @@ class MainApp(QtWidgets.QMainWindow):
         print("Stopping the function...")
         self.multi_lidar_services.multi_lidar_driver.stop_lidars()
         self.is_running = False
+        self.key_input_approval=False
         if self.timer_thread:###데이터 뷰의 타이머 쓰레드 
             self.timer_thread.join()
         if self.count_thread:###CSV 데이터구축의 카운트 쓰레드 
@@ -726,6 +730,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.save_csv_ui.Button_stop.clicked.connect(self.stop_function)
         self.connect_unity_ui.Button_start.clicked.connect(self.start_connect_unity_function)
         self.connect_unity_ui.Button_stop.clicked.connect(self.stop_function)
+        self.connect_unity_ui.Button_Connect.clicked.connect(self.start_key_input_function)
+        self.connect_unity_ui.Button_stop.clicked.connect(self.stop_function)
 
     def set_buttons_by_connection(self):
         if self.multi_lidar_services is None:
@@ -735,6 +741,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.transfer_learn_ui.Button_start.setEnabled(False)
             self.save_csv_ui.Button_start.setEnabled(False)
             self.connect_unity_ui.Button_start.setEnabled(False)
+            self.connect_unity_ui.Button_Connect.setEnabled(False)
             # 라이다 서비스가 없으면 Stop 버튼을 비활성화
             self.data_view_ui.Button_stop.setEnabled(False)
             self.skeleton_view_ui.Button_stop.setEnabled(False)
