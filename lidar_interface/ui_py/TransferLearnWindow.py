@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TransferLearnWindow(object):
     def setupUi(self, TransferLearnWindow):
         TransferLearnWindow.setObjectName("TransferLearnWindow")
-        TransferLearnWindow.resize(600, 300)
+        TransferLearnWindow.resize(600, 301)
         self.label_title = QtWidgets.QLabel(TransferLearnWindow)
         self.label_title.setGeometry(QtCore.QRect(10, 20, 201, 16))
         font = QtGui.QFont()
@@ -54,11 +54,12 @@ class Ui_TransferLearnWindow(object):
         self.Button_back.setText(_translate("TransferLearnWindow", "Back"))
         self.Button_start.setText(_translate("TransferLearnWindow", "Start"))
         self.Button_stop.setText(_translate("TransferLearnWindow", "Stop"))
-        self.Label_explain.setText(_translate("TransferLearnWindow", "좌측 리스트에 보이는 동작을\n"
-"동작마다 2초씩 5번 취해주세요.\n"
+        self.Label_explain.setText(_translate("TransferLearnWindow", "좌측 리스트에 보이는 동작이\n"
+"목표로하는 모션들입니다.\n"
 "\n"
-"Start버튼을 누르시면 상세한 설명이 음성으로 안내 되오니\n"
-"안내 절차에 따라주십시오"))
+"전이학습 시에는 반드시 필터가\n"
+"잘 동작하는지 Data View를\n"
+"통해 확인하는 것이 권장 됩니다"))
 
 
 if __name__ == "__main__":

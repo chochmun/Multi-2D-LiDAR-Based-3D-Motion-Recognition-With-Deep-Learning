@@ -30,7 +30,7 @@ class MultiLidarServices:
             
     def get_detected_point(self):
         filtered_data=self.return_filtered_data()
-        print(filtered_data)
+        
         all_summaries =self.process_and_summarize_all(filtered_data)
         return self.calculate_points(all_summaries)
 
@@ -178,6 +178,7 @@ class MultiLidarServices:
 
         for row_index, row in enumerate(data):
             clusters = self.process_array_clusters(row)
+            
             summaries = self.summarize_clusters(clusters, row_index)
             all_summaries.extend(summaries)
 
@@ -185,13 +186,22 @@ class MultiLidarServices:
     
     def calculate_points(self, all_summaries):
         points = []
+        thetas=[]
+        center_true=False
         for summary in all_summaries:
             row = summary['row']
             angle = summary['index_mean']
             distance = summary['value_mean']
             
             # Convert angle to radians
+            
+            theta = angle-self.center_angle
+            thetas.append(theta)
+            if theta <10 and theta>-10:
+                center_true=True
             theta = np.radians(angle-self.center_angle)
+            
+            
             if row == 0:
                 sensor_z = self.sensor_top_z
                 pitch_angle = np.radians(self.pitch_angle_top)
@@ -209,13 +219,17 @@ class MultiLidarServices:
             y = distance * np.cos(theta) * np.cos(pitch_angle)
             z = sensor_z + distance * np.sin(pitch_angle)
             
-            points.append({'x': x, 'y': y, 'z': z})
+            points.append({'x': x, 'y': y, 'z': z, 'row':row, 'center':center_true})
+            center_true=False
+        print("클러스터 중심 각도 : ", thetas)
+        print(points)
         
         return points
             
     def get_motion_by_AI(self,data):
-       
+        
         result = self.model.predict(data)
+        
         
         return result[0]
     

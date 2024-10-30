@@ -179,6 +179,7 @@ class MainApp(QtWidgets.QMainWindow):
                 for key, value in poses.items():
                     display_text = f"{key}: {value}"
                     self.save_csv_ui.List_pose.addItem(display_text)
+                    self.transfer_learn_ui.List_pose.addItem(display_text)
 
     def load_key_mapping(self):
         return {
@@ -187,10 +188,10 @@ class MainApp(QtWidgets.QMainWindow):
             -1: [Key.down,None], #(미구현) 
             2: [Key.left,Key.up], #왼손 들기 -> 좌 이동
             3: [Key.right,Key.up],#오른손 들기 -> 우 이동
-            8: [Key.space,Key.up], #점프  -> 점프ㅇ
-            4: ['t',None],#만세 - 상호작용1
-            5: ['y',None],#스쿼트 -상호작용2
-            6: ['u',None],#플랭크 - 상호작용3 
+            8: [Key.space,4], #점프  -> 점프ㅇ
+            4: ['1',None],#만세 - 상호작용1
+            5: ['2',None],#스쿼트 -상호작용2
+            6: ['3',None],#플랭크 - 상호작용3 
             7: ['p',None],#너무 가까움 -Pause
             1:['p',None]#사람없음 -Pause
         }, {
@@ -347,6 +348,7 @@ class MainApp(QtWidgets.QMainWindow):
         while self.is_running:
             
             points=self.multi_lidar_services.get_detected_point()
+
             self.plot_real_time(ax,points)
             QApplication.processEvents()
         self.stop_function()
@@ -441,13 +443,13 @@ class MainApp(QtWidgets.QMainWindow):
             labels = ["stand", "none", "left_hand", "right_hand", "wave", "squat", "plank", "too_close", "jump", "walk"]
 
             # Setup the matplotlib figure and axis for real-time plotting
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))  # Two subplots: one for delay, one for predictions
+            """fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))  # Two subplots: one for delay, one for predictions
 
             # Plot for delays (subplot 1)
             ax1.set_title('Real-Time Delay Plot')
             ax1.set_xlabel('Data Points')
             ax1.set_ylabel('Delay (s)')
-            line1, = ax1.plot([], [], lw=2)
+            
             ax1.set_xlim(0, 50)  # Set the x-axis to 0-50 for data points
             ax1.set_ylim(0, 0.025)  # Adjust the y-axis limits based on expected delays
 
@@ -457,35 +459,37 @@ class MainApp(QtWidgets.QMainWindow):
             ax2.set_ylabel('Prediction')
             scatter = ax2.scatter([], [], color='orange')
             ax2.set_xlim(0, 50)  # Set the x-axis to 0-50 for data points
-            ax2.set_ylim(-1, 10)  # Adjust the y-axis based on possible motion prediction values
+            ax2.set_ylim(-1, 10)  # Adjust the y-axis based on possible motion prediction values"""
 
-            def update_plot(i):
+            """def update_plot(i):
                 # Update the delay line with new data
                 line1.set_data(list(range(len(delays))), delays)
                 # Update the scatter plot with new data
                 if delays and motion_predictions:  # Check if there's data to plot
                     scatter.set_offsets(np.column_stack([list(range(len(motion_predictions))), motion_predictions]))
 
-                return line1, scatter,
+                return line1, scatter,"""
 
-            ani = FuncAnimation(fig, update_plot, blit=True, interval=100)  # Update the plot every 100 ms
-            plt.ion()  # Enable interactive mode
-            plt.tight_layout()  # Ensure subplots fit neatly
-            plt.show()
+            #ani = FuncAnimation(fig, update_plot, blit=True, interval=100)  # Update the plot every 100 ms
+            #plt.ion()  # Enable interactive mode
+            #plt.tight_layout()  # Ensure subplots fit neatly
+            #plt.show()
 
             while self.is_running:
+                #b=time.time()
                 filtered_data1 = self.multi_lidar_services.return_filtered_data()
                 filtered_data1 = [item for sublist in filtered_data1 for item in sublist]
 
                 # Measure delay for motion prediction
-                loop_start_time = time.time()
+                #a=time.time()
                 motion_accuracies1 = self.multi_lidar_services.get_motion_by_AI(filtered_data1)
-                delay = round(time.time() - loop_start_time, 5)
-
+                #delay=time.time()-a
+                #print(delay)
+                
                 # Get idx_best_motion1 prediction
                 idx_best_motion1, idx_best_motion2 = self.mplcanvas.update_plot_by_realtime_motion(motion_accuracies1, None)
 
-                # Append the delay and motion prediction to the lists
+                """# Append the delay and motion prediction to the lists
                 delays.append(delay)
                 motion_predictions.append(idx_best_motion1)  # Store the prediction for plotting
 
@@ -507,13 +511,15 @@ class MainApp(QtWidgets.QMainWindow):
 
                 # Update the plot's y-axis labels to show human-readable motions
                 ax2.set_yticks(range(len(labels)))
-                ax2.set_yticklabels(labels)
+                ax2.set_yticklabels(labels)"""
 
                 # Start the threading for keyboard press
                 if self.key_input_approval==True:
                     threading.Thread(target=self.press_keyboard, args=(idx_best_motion1, self.key_mapping_play1, 0.05)).start()
 
                 QApplication.processEvents()
+                #delay_total=time.time()-b
+                #print("total==========",delay_total)
 
             self.stop_function()
     def start_key_input_function(self):
@@ -785,10 +791,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.show_error_message("Connect three Lidars correctly") #라이다 미연결 시 예외처리
             self.multi_lidar_services = None
 
-    def plot_real_time(self,ax,points):
-        #app = QApplication(sys.argv)
-        
-        print(points)
+    def plot_real_time(self, ax, points):
         ax.cla()  # 이전 플롯 클리어
 
         # 라이다 센서의 위치를 먼저 플로팅
@@ -800,14 +803,61 @@ class MainApp(QtWidgets.QMainWindow):
 
         for pos in sensor_positions:
             ax.scatter(pos[0], pos[1], pos[2], color='red', s=100, label='Sensor Position')
+            break
 
         # 포인트 플로팅
+        row_0_points = [p for p in points if p['row'] == 0 and p['center']]
+        row_1_points = [p for p in points if p['row'] == 1 and p['center']]
+        row_2_points = [p for p in points if p['row'] == 2]  # row 2는 center 여부 상관없이 모두 사용
+
+        non_center_points = [p for p in points if (p['row'] == 0 or p['row'] == 1) and not p['center']]
+
+
+        if row_0_points and row_1_points:
+            # 첫 번째 row=0, center=True인 점과 row=1, center=True인 점
+            row_0_point = row_0_points[0]
+            row_1_point = row_1_points[0]
+
+            # 중간 점 계산 (x, y, z 값의 평균)
+            mid_point = {
+                'x': (row_0_point['x'] + row_1_point['x']) / 2,
+                'y': (row_0_point['y'] + row_1_point['y']) / 2,
+                'z': (row_0_point['z'] + row_1_point['z']) / 2
+            }
+
+            # 중간 점을 플로팅
+            ax.scatter(mid_point['x'], mid_point['y'], mid_point['z'], color='purple', s=100)
+
+            # 중간점과 row 0 연결
+            ax.plot([mid_point['x'], row_0_point['x']], 
+                    [mid_point['y'], row_0_point['y']], 
+                    [mid_point['z'], row_0_point['z']], 
+                    color='green')
+
+            # 중간점과 row 1 연결
+            ax.plot([mid_point['x'], row_1_point['x']], 
+                    [mid_point['y'], row_1_point['y']], 
+                    [mid_point['z'], row_1_point['z']], 
+                    color='orange')
+
+            # row=2의 모든 점들과 중간 점을 연결 (center 여부 상관없이)
+            for row_2_point in row_2_points:
+                ax.plot([row_1_point['x'], row_2_point['x']], 
+                        [row_1_point['y'], row_2_point['y']], 
+                        [row_1_point['z'], row_2_point['z']], 
+                        color='blue')
+            for non_center_point in non_center_points:
+                ax.plot([mid_point['x'], non_center_point['x']], 
+                        [mid_point['y'], non_center_point['y']], 
+                        [mid_point['z'], non_center_point['z']], 
+                        color='red')
+
+        # 나머지 점들을 각각 플로팅
         xs = [p['x'] for p in points]
         ys = [p['y'] for p in points]
         zs = [p['z'] for p in points]
-        #print(xs,ys,zs)
 
-        ax.scatter(xs, ys, zs, color='blue', s=50, label='Detected Points')
+        ax.scatter(xs, ys, zs, color='blue', s=50)
 
         # 좌표 축 제한
         ax.set_xlim([-500, 500])
@@ -816,8 +866,11 @@ class MainApp(QtWidgets.QMainWindow):
         ax.set_xlabel('X axis')
         ax.set_ylabel('Y axis')
         ax.set_zlabel('Z axis')
+        ax.legend()  # 범례 추가
+
 
         plt.pause(0.01)  # 플롯 갱신 대기 시간 (0.1초)
+
     def press_keyboard(self, idx_best_motion, player_keys, keydown_time=0.05):
         keys=[None,None]
         if idx_best_motion in player_keys:

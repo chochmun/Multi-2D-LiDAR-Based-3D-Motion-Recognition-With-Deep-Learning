@@ -28,7 +28,7 @@ class STEP50CNN:
         실시간 데이터를 모델에 입력할 수 있도록 전처리하는 함수.
         new_data: (1, 270) 형식의 단일 프레임 데이터.
         """
-        return np.expand_dims(np.array(new_data), axis=0)  # 배치 차원 추가
+        return   # 배치 차원 추가
 
     def predict_real_time_motion(self, processed_data):
         """
@@ -50,9 +50,16 @@ class STEP50CNN:
         """
         실시간으로 데이터를 입력받아 바로 모션 예측을 수행하는 함수.
         """
-        processed_data = self.preprocess_real_time_data(new_data)
-        predicted_output = self.predict_real_time_motion(processed_data)
-        return predicted_output if predicted_output is not None else [[0.998, 0, 0, 0, 0, 0, 0, 0, 0.001]]
+        processed_data = np.expand_dims(np.array(new_data), axis=0)
+        if self.model is None:
+            print("모델이 로드되지 않았습니다.")
+            return None
+        
+        prediction = self.model.predict(processed_data)  # 모델로 예측 수행
+        
+        
+        return prediction
+
 
 
 class STEP50LSTM:

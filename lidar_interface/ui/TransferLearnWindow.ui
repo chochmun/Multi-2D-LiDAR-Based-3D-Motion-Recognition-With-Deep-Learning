@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>300</height>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,11 +96,12 @@
     <number>0</number>
    </property>
    <property name="text">
-    <string>좌측 리스트에 보이는 동작을
-동작마다 2초씩 5번 취해주세요.
+    <string>좌측 리스트에 보이는 동작이
+목표로하는 모션들입니다.
 
-Start버튼을 누르시면 상세한 설명이 음성으로 안내 되오니
-안내 절차에 따라주십시오</string>
+전이학습 시에는 반드시 필터가
+잘 동작하는지 Data View를
+통해 확인하는 것이 권장 됩니다</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>

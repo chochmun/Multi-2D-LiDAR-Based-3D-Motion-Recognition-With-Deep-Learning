@@ -300,11 +300,11 @@ if __name__=="__main__":
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[2])
 
     # RNNModel 생성
-    rnn_model = CNNModel(input_shape=(X_train.shape[1],),output_shape=9 ,device=device)
-    #rnn_model = CNNModel(input_shape=(X_train.shape[1],),output_shape=9 ,device=device, model_name='LIGHT_CNN.h5')
+    #rnn_model = CNNModel(input_shape=(X_train.shape[1],),output_shape=9 ,device=device)
+    rnn_model = CNNModel(input_shape=(X_train.shape[1],),output_shape=9 ,device=device, model_name='CNN_4mb3.h5')
 
     # 모델 학습
-    #rnn_model.train_and_evaluate_model(X_train, y_train, epochs=100,batch_size=128, model_name='CNN_4mb.h5')
+    rnn_model.train_and_evaluate_model(X_train, y_train, epochs=30,batch_size=128, model_name='CNN_4mb3.h5')
 
     # 모델을 사용해 최종 예측 및 평가
-    rnn_model.predict_and_evaluate(X_train, y_train, model_path='CNN_4mb.h5', label_mapping=label_mapping)
+    rnn_model.predict_and_evaluate(X_train, y_train, model_path='CNN_4mb3.h5', label_mapping=label_mapping)
