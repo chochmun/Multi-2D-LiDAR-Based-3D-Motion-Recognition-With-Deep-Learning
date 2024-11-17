@@ -53,13 +53,17 @@ class MultiLidarServices:
             filted_dist_top=np.where(distances[0] < self.env_max_distances[0], distances[0], 0)
             filted_dist_mid=np.where(distances[1] < self.env_max_distances[1], distances[1], 0)
             filted_dist_bot=np.where(distances[2] < self.env_max_distances[2], distances[2], 0)
-            return [filted_dist_top,filted_dist_mid,filted_dist_bot]
+            if len(filted_dist_top)>91:
+                return [filted_dist_top[:90],filted_dist_mid[:90],filted_dist_bot[:90]], [filted_dist_top[90:180],filted_dist_mid[90:180],filted_dist_bot[90:180]]
+            else:
+                return [filted_dist_top,filted_dist_mid,filted_dist_bot]
         else:
             return [distances[0],distances[1],distances[2]]
 
     def view_datas(self):
         
         distances=self.multi_lidar_driver.get_distances()
+        print(distances)
         #print(distances[0])
         #print(self.env_max_distances[0])
         #print(env_max_distances[0])
@@ -227,10 +231,7 @@ class MultiLidarServices:
         return points
             
     def get_motion_by_AI(self,data):
-        
         result = self.model.predict(data)
-        
-        
         return result[0]
     
     def plot_3d_points(self, points):

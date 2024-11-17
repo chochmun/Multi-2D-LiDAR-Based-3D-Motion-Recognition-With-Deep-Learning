@@ -131,7 +131,6 @@ class MplCanvas(FigureCanvas):
                 bar.set_color('#17FD79')
 
         # 두 번째 서브플롯 업데이트 (필요 시)
-        idx_max_val2=None
         if self.angle > 91:
 
             max_val2 = np.max(data2)
@@ -142,9 +141,11 @@ class MplCanvas(FigureCanvas):
                     bar.set_color('#0EB2F1')
                 else:
                     bar.set_color('#17FD79')
+        else:
+            idx_max_val2=None
 
         # 시나리오 인덱스를 다음으로 넘어감
-        self.scenario_index = (self.scenario_index + 1) % len(self.scenario)
+        #self.scenario_index = (self.scenario_index + 1) % len(self.scenario)
 
         self.draw()  # 그래프 다시 그리기
         return [idx_max_val1,idx_max_val2]

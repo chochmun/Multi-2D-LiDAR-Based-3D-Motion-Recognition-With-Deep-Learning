@@ -1,18 +1,18 @@
 {
     "max_dist": 2000,
     "buzz_duration": 3,
-    "selected_angle": 90,
-    "selected_env": "default.json",
+    "selected_angle": 180,
+    "selected_env": "default_180.json",
     "selected_model": "CNN_4mb3.h5",
     "ports_choice": [
         1,
-        2,
-        3
+        3,
+        2
     ],
     "frames": 50,
     "name": "jcm",
     "selected_pose": "0",
-    "new_env_name": "def",
+    "new_env_name": "default_180.json",
     "new_env_loading_time": 7,
-    "new_env_margin_dist": 50
+    "new_env_margin_dist": 70
 }

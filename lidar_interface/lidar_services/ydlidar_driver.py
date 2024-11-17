@@ -28,8 +28,8 @@ class YDLidarX2:
         self._last_chunk = None
         # 탐지 각도 설정
         self.D_ANGLE= angle
-        self.D_start_angle = int(180-(90-self.D_ANGLE/2))
-        self.D_end_angle = int (180+(90-self.D_ANGLE/2))
+        self.D_start_angle = int(180-(self.D_ANGLE/2)) #90도이면 135도~225도
+        self.D_end_angle = int (180+(self.D_ANGLE/2)) #180도면 
         # 2D array capturing the distances for angles from 0 to 359
         self._distances = np.array([[self._out_of_range for _ in range(self._max_data)] for l in range(360)], dtype=np.uint32)
         # 1D array capturing the number of measurements for angles from 0 to 359
@@ -146,7 +146,7 @@ class YDLidarX2:
                         if angle >= 360:
                             angle -= 360
                         # Only consider angles between 135 and 225 degrees
-                        if 135 <= angle <= 225:
+                        if self.D_start_angle <= angle <= self.D_end_angle:
                             self._distances[angle][distances_pnt[angle]] = dist
                             if distances_pnt[angle] < self._max_data - 1:
                                 distances_pnt[angle] += 1
@@ -186,7 +186,7 @@ class YDLidarX2:
                             if angle >= 360:
                                 angle -= 360
                             # Only consider angles between 135 and 225 degrees
-                            if 135 <= angle <= 225:
+                            if self.D_start_angle <= angle <= self.D_end_angle:
                                 self._distances[angle][distances_pnt[angle]] = dist
                                 if distances_pnt[angle] < self._max_data - 1:
                                     distances_pnt[angle] += 1
