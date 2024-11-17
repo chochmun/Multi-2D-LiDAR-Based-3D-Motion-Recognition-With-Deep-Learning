@@ -7,6 +7,8 @@
 - 착용형 센서는 신체적 자유도가 낮아 불편함이 존재합니다.
 
 ![Motion Recognition](https://github.com/chochmun/Multi-2d-Lidar-sensors-motion-reconition/assets/139981644/bc3380af-bde0-4e90-ae37-c269e4475c3f)
+# 졸업작품 포스터
+![2024캡디_c06팜플랫](https://github.com/user-attachments/assets/fda4747a-e8f5-4e30-8f64-d954b5ab3d94)
 
 # 프로젝트 목표
 
